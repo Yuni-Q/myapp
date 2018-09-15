@@ -5,7 +5,7 @@ var models = require("../models")
 
 checkLogin = (req, res) => {
   if (req.session.user_name) {
-    models.users.findOne({
+    models.Users.findOne({
       where: {
         user_name: req.session.user_name,
         password: req.session.password
@@ -42,7 +42,8 @@ router.get('/', function (req, res, next) {
 });
 
 router.post('/login_process', function (req, res, next) {
-  models.users.findOne({
+  console.log(models)
+  models.Users.findOne({
     where: {
       user_name: req.body.user_name,
       password: req.body.password
@@ -93,7 +94,7 @@ router.get('/join', function (req, res, next) {
 })
 
 router.post('/join_process', function (req, res, next) {
-  models.users.create({
+  models.Users.create({
     user_name: req.body.user_name,
     password: req.body.password
   }).catch(function (err) {
@@ -103,7 +104,7 @@ router.post('/join_process', function (req, res, next) {
 })
 
 router.get('/delete', function (req, res, next) {
-  models.users.destroy({
+  models.Users.destroy({
     where: {
       user_name: req.session.user_name,
       password: req.session.password
