@@ -1,12 +1,11 @@
-var express = require('express');
+var express = require("express");
 var router = express.Router();
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
+router.get("/", function(req, res, next) {
+  res.cookie("name", "Yun");
+  res.render("index", { title: "로그인하세요" });
 
-  res.cookie("name","Yun");
-  res.render('index', { title: 'Yuni-Q' });
-  
   // 쿠키 세팅
   // res.cookie(key,value,{options});
 
@@ -16,8 +15,6 @@ router.get('/', function(req, res, next) {
   // 쿠키 삭제
   // res.clearCookie(key);
   // res.clearCookie(key, {path:'/path'});
-
-
 });
 
 module.exports = router;

@@ -1,19 +1,32 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
-    <form action="/users/login_process" method="post">
-      <label for="user_name"></label>
-      <input type="text" name="user_name" placeholder="user_name" id="user_name">
-      <label for="user_password"></label>
-      <input type="password" name="password" placeholder="password" id="password">
-      <input type="submit" value="로그인 !!">
-    </form> 
-    <a href="/users/join">회원가입을 해보자</a>
-  </body>
+
+<head>
+  <title>
+    <%= title %>
+  </title>
+  <link rel='stylesheet' href='/stylesheets/style.css' />
+</head>
+
+<body>
+  <h1>
+    <%= title %>
+  </h1>
+  <p>Welcome to
+    <%= title %>
+  </p>
+  <form action="/users/login_process" method="post">
+    <label for="user_name"></label>
+    <input type="text" name="user_name" placeholder="user_name" id="user_name">
+    <br>
+    <label for="user_password"></label>
+    <input type="password" name="password" placeholder="password" id="password">
+    <br>
+    <br>
+    <input type="submit" value="로그인 !!">
+  </form>
+  <br>
+  <a href="/users/join">회원가입을 해보자</a>
+</body>
+
 </html>
