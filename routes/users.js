@@ -1,24 +1,21 @@
 var express = require("express");
 var router = express.Router();
 var models = require("../models");
+var crypto = require("crypto");
 
 checkLogin = (req, res) => {
+  var hmac = crypto.createHmac("sha256", "yuni");
+  var pass = hmac.update(req.session.password).digest("hex");
+  pass = JSON.stringify(pass);
   if (req.session.user_name) {
     models.Users.findOne({
       where: {
         user_name: req.session.user_name,
-        password: req.session.password
+        password: pass
       }
     })
       .then(result => {
-        if (
-          result.dataValues.user_name == req.session.user_name &&
-          result.dataValues.password == req.session.password
-        ) {
-        } else {
-          res.render("login", {
-            title: "login"
-          });
+        if (result) {
         }
       })
       .catch(function(err) {
@@ -47,32 +44,23 @@ router.get("/", function(req, res, next) {
 });
 
 router.post("/login_process", function(req, res, next) {
+  var hmac = crypto.createHmac("sha256", "yuni");
+  var pass = hmac.update(req.body.password).digest("hex");
+  pass = JSON.stringify(pass);
   console.log(models);
   models.Users.findOne({
     where: {
       user_name: req.body.user_name,
-      password: req.body.password
+      password: pass
     }
   })
     .then(result => {
       if (result) {
-        console.log("select result");
-        console.log(result);
-        if (
-          (result.dataValues.user_name =
-            req.body.user_name &&
-            result.dataValues.password == req.body.password)
-        ) {
-          req.session.user_name = req.body.user_name;
-          req.session.password = req.body.password;
-          res.render("page", {
-            title: req.body.user_name
-          });
-        } else {
-          res.render("login", {
-            title: "login 실패"
-          });
-        }
+        req.session.user_name = req.body.user_name;
+        req.session.password = req.body.password;
+        res.render("page", {
+          title: req.body.user_name
+        });
       } else {
         res.render("login", {
           title: "login 실패"
@@ -108,9 +96,12 @@ router.get("/join", function(req, res, next) {
 });
 
 router.post("/join_process", function(req, res, next) {
+  var hmac = crypto.createHmac("sha256", "yuni");
+  var pass = hmac.update(req.body.password).digest("hex");
+  pass = JSON.stringify(pass);
   models.Users.create({
     user_name: req.body.user_name,
-    password: req.body.password
+    password: pass
   })
     .then(result => {
       console.log("//////////");
@@ -124,10 +115,13 @@ router.post("/join_process", function(req, res, next) {
 });
 
 router.get("/delete", function(req, res, next) {
+  var hmac = crypto.createHmac("sha256", "yuni");
+  var pass = hmac.update(req.session.password).digest("hex");
+  pass = JSON.stringify(pass);
   models.Users.destroy({
     where: {
       user_name: req.session.user_name,
-      password: req.session.password
+      password: pass
     }
   })
     .then(result => {
