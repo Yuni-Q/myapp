@@ -1,17 +1,17 @@
-"use strict";
-const Sequelize = require("sequelize");
+// "use strict";
+// const Sequelize = require('sequelize');
 
 module.exports = (Sequelize, DataTypes) => {
   const Users = Sequelize.define(
-    "Users",
+    'Users',
     {
       user_name: DataTypes.STRING,
-      password: DataTypes.STRING
+      password: DataTypes.STRING,
     },
-    {}
+    {},
   );
-  Users.associate = function(models) {
-    // associations can be defined here
-  };
+  // Users.associate = (models) => {
+  //   // associations can be defined here
+  // };
   return Users;
 };

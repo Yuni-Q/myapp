@@ -1,137 +1,138 @@
-var express = require("express");
-var router = express.Router();
-var models = require("../models");
-var crypto = require("crypto");
+const express = require('express');
+const crypto = require('crypto');
+const models = require('../models');
 
-checkLogin = (req, res) => {
-  var hmac = crypto.createHmac("sha256", "yuni");
-  var pass = hmac.update(req.session.password).digest("hex");
+
+const router = express.Router();
+
+const checkLogin = (req, res) => {
+  const hmac = crypto.createHmac('sha256', 'yuni');
+  let pass = hmac.update(req.session.password).digest('hex');
   pass = JSON.stringify(pass);
   if (req.session.user_name) {
     models.Users.findOne({
       where: {
         user_name: req.session.user_name,
-        password: pass
-      }
+        password: pass,
+      },
     })
-      .then(result => {
+      .then((result) => {
         if (result) {
+          console.log(result);
         }
       })
-      .catch(function(err) {
-        //TODO: error handling
+      .catch((err) => {
+        // TODO: error handling
         console.log(err);
       });
   } else {
-    res.render("login", {
-      title: "login"
+    res.render('login', {
+      title: 'login',
     });
   }
 };
 /* GET users listing. */
-router.get("/", function(req, res, next) {
+router.get('/', (req, res) => {
   if (req.session.user_name) {
     console.log(req.session);
     console.log(req.session.user_name);
-    res.render("index", {
-      title: req.session.user_name
+    res.render('index', {
+      title: req.session.user_name,
     });
   } else {
-    res.render("login", {
-      title: "login"
+    res.render('login', {
+      title: 'login',
     });
   }
 });
 
-router.post("/login_process", function(req, res, next) {
-  var hmac = crypto.createHmac("sha256", "yuni");
-  var pass = hmac.update(req.body.password).digest("hex");
+router.post('/login_process', (req, res) => {
+  const hmac = crypto.createHmac('sha256', 'yuni');
+  let pass = hmac.update(req.body.password).digest('hex');
   pass = JSON.stringify(pass);
   console.log(models);
   models.Users.findOne({
     where: {
       user_name: req.body.user_name,
-      password: pass
-    }
+      password: pass,
+    },
   })
-    .then(result => {
+    .then((result) => {
       if (result) {
         req.session.user_name = req.body.user_name;
         req.session.password = req.body.password;
-        res.render("page", {
-          title: req.body.user_name
+        res.render('page', {
+          title: req.body.user_name,
         });
       } else {
-        res.render("login", {
-          title: "login 실패"
+        res.render('login', {
+          title: 'login 실패',
         });
       }
     })
-    .catch(function(err) {
-      //TODO: error handling
+    .catch((err) => {
+      // TODO: error handling
       console.log(err);
     });
 });
 
-router.get("/logout", function(req, res, next) {
-  req.session.destroy(function(err) {
-    console.log("logout");
+router.get('/logout', (req, res) => {
+  req.session.destroy(() => {
+    console.log('logout');
   });
-  res.render("login", {
-    title: "login"
+  res.render('login', {
+    title: 'login',
   });
 });
 
-router.get("/page", async function(req, res, next) {
+router.get('/page', async (req, res) => {
   await checkLogin(req, res);
-  res.render("page", {
-    title: req.session.user_name
+  res.render('page', {
+    title: req.session.user_name,
   });
 });
 
-router.get("/join", function(req, res, next) {
-  res.render("join", {
-    title: "join"
+router.get('/join', (req, res) => {
+  res.render('join', {
+    title: 'join',
   });
 });
 
-router.post("/join_process", function(req, res, next) {
-  var hmac = crypto.createHmac("sha256", "yuni");
-  var pass = hmac.update(req.body.password).digest("hex");
+router.post('/join_process', (req, res) => {
+  const hmac = crypto.createHmac('sha256', 'yuni');
+  let pass = hmac.update(req.body.password).digest('hex');
   pass = JSON.stringify(pass);
   models.Users.create({
     user_name: req.body.user_name,
-    password: pass
+    password: pass,
   })
-    .then(result => {
-      console.log("//////////");
+    .then((result) => {
       console.log(result.dataValues.id);
-      console.log("//////////");
     })
-    .catch(function(err) {
+    .catch((err) => {
       console.log(err);
     });
-  res.redirect("/");
+  res.redirect('/');
 });
 
-router.get("/delete", function(req, res, next) {
-  var hmac = crypto.createHmac("sha256", "yuni");
-  var pass = hmac.update(req.session.password).digest("hex");
+router.get('/delete', (req, res) => {
+  const hmac = crypto.createHmac('sha256', 'yuni');
+  let pass = hmac.update(req.session.password).digest('hex');
   pass = JSON.stringify(pass);
   models.Users.destroy({
     where: {
       user_name: req.session.user_name,
-      password: pass
-    }
+      password: pass,
+    },
   })
-    .then(result => {
-      req.session.destroy(function(err) {
-        console.log("logout");
+    .then(() => {
+      req.session.destroy(() => {
+        console.log('logout');
       });
     })
-    .catch(function(err) {
+    .catch((err) => {
       console.log(err);
     });
-  res.redirect("/");
+  res.redirect('/');
 });
 module.exports = router;
