@@ -1,35 +1,26 @@
 const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
-const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-const session = require('express-session');
+
 const swaggerUi = require('swagger-ui-express');
-const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
+// const indexRouter = require('./routes/index');
+// const usersRouter = require('./routes/users');
 const swaggerDocument = require('./swagger.json');
+const environment = require('./config/environment');
+const route = require('./config/routes');
 
 const app = express();
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
-
 app.use(logger('dev'));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(
-  session({
-    secret: '@#@$MYSIGN#@$#$',
-    resave: false,
-    saveUninitialized: true,
-  }),
-);
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+
+// app.use('/', indexRouter);
+// app.use('/users', usersRouter);
+environment(app);
+route(app);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // catch 404 and forward to error handler
