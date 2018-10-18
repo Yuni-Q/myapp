@@ -3,7 +3,13 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon ./bin/www"
+    "start": "nodemon ./bin/www",
+    "debug": "node --inspect-brk=9229 app.js",
+    "worker": "pm2 start ./bin/worker.js -i 0 --name 'worker'",
+    "batch": "export NODE_ENV=staging && pm2 start ./app.js --name 'batch'",
+    "prod": "pm2 start ./app.js --name 'batch' && pm2 start ./bin/worker.js --name 'worker'",
+    "build": "pkg . --out-path=dist --debug",
+    "deploy": "git pull && npm install && pm2 start ecosystem.config.js --env"
   },
   "dependencies": {
     "cookie-parser": "~1.4.3",
