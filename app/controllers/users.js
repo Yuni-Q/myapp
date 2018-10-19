@@ -1,33 +1,36 @@
 
 const express = require('express');
 const crypto = require('crypto');
+const passport = require('passport');
 const models = require('../models');
+const { isLoggedIn, isNotLoggedIn } = require('../middlewares/middlewares');
 
 const router = express.Router();
 
-const checkLogin = (req, res) => {
-  const hmac = crypto.createHmac('sha256', 'yuni');
-  let pass = hmac.update(req.session.password).digest('hex');
-  pass = JSON.stringify(pass);
-  if (req.session.user_name) {
-    models.Users.findOne({
-      where: {
-        user_name: req.session.user_name,
-        password: pass,
-      },
-    })
-      .catch((err) => {
-        // TODO: error handling
-        console.log(err);
-      });
-  } else {
-    res.render('login', {
-      title: 'login',
-    });
-  }
-};
+// const checkLogin = (req, res) => {
+//   const hmac = crypto.createHmac('sha256', 'yuni');
+//   let pass = hmac.update(req.session.password).digest('hex');
+//   pass = JSON.stringify(pass);
+//   if (req.session.user_name) {
+//     models.Users.findOne({
+//       where: {
+//         user_name: req.session.user_name,
+//         password: pass,
+//       },
+//     })
+//       .catch((err) => {
+//         // TODO: error handling
+//         console.log(err);
+//       });
+//   } else {
+//     res.render('login', {
+//       title: 'login',
+//     });
+//   }
+// };
+
 /* GET users listing. */
-router.get('/', (req, res) => {
+router.get('/', isNotLoggedIn, (req, res) => {
   if (req.session.user_name) {
     console.log(req.session);
     console.log(req.session.user_name);
@@ -41,59 +44,49 @@ router.get('/', (req, res) => {
   }
 });
 
-router.post('/login_process', (req, res) => {
-  const hmac = crypto.createHmac('sha256', 'yuni');
-  let pass = hmac.update(req.body.password).digest('hex');
-  pass = JSON.stringify(pass);
-  console.log(models);
-  models.Users.findOne({
-    where: {
-      user_name: req.body.user_name,
-      password: pass,
-    },
-  })
-    .then((result) => {
-      if (result) {
-        req.session.user_name = req.body.user_name;
-        req.session.password = req.body.password;
-        res.render('page', {
-          title: req.body.user_name,
-        });
-      } else {
-        res.render('login', {
-          title: 'login 실패',
-        });
+// login_process
+router.post('/login', isNotLoggedIn, (req, res, next) => {
+  passport.authenticate('local', (authError, user, info) => {
+    if (authError) {
+      console.error(authError);
+      return next(authError);
+    }
+    if (!user) {
+      req.flash('loginError', info.message);
+      return res.render('login', { title: 'login' });
+    }
+    return req.login(user, (loginError) => {
+      if (loginError) {
+        console.error(loginError);
+        return next(loginError);
       }
-    })
-    .catch((err) => {
-      // TODO: error handling
-      console.log(err);
+      return res.redirect('/');
     });
+  })(req, res, next); // 미들웨어 내의 미들웨어에는 (req, res, next)를 붙입니다.
 });
 
-router.get('/logout', (req, res) => {
-  req.session.destroy(() => {
-    console.log('logout');
-  });
-  res.render('login', {
-    title: 'login',
-  });
+router.get('/logout', isLoggedIn, (req, res) => {
+  req.logout();
+  req.session.destroy();
+  res.redirect('/');
 });
 
-router.get('/page', async (req, res) => {
-  await checkLogin(req, res);
+router.get('/page', isLoggedIn, async (req, res) => {
+  // await checkLogin(req, res);
   res.render('page', {
     title: req.session.user_name,
   });
 });
 
-router.get('/join', (req, res) => {
+router.get('/join', isNotLoggedIn, (req, res) => {
   res.render('join', {
     title: 'join',
+    user: req.user,
+    joinError: req.flash('joinError'),
   });
 });
 
-router.post('/join_process', (req, res) => {
+router.post('/page', isLoggedIn, (req, res) => {
   const hmac = crypto.createHmac('sha256', 'yuni');
   let pass = hmac.update(req.body.password).digest('hex');
   pass = JSON.stringify(pass);
@@ -110,7 +103,7 @@ router.post('/join_process', (req, res) => {
   res.redirect('/');
 });
 
-router.get('/delete', (req, res) => {
+router.delete('/', isLoggedIn, (req, res) => {
   const hmac = crypto.createHmac('sha256', 'yuni');
   let pass = hmac.update(req.session.password).digest('hex');
   pass = JSON.stringify(pass);

@@ -7,6 +7,10 @@ const compression = require('compression');
 const bearerToken = require('express-bearer-token');
 const cors = require('cors');
 const mongoose = require('mongoose');
+const passport = require('passport'); // passport module add
+const flash = require('connect-flash');
+const passportConfig = require('../app/middlewares/passport');
+
 
 global.config = require('config');
 
@@ -20,16 +24,26 @@ module.exports = (app) => {
   // CORS 설정
   app.use(cors());
 
+  passportConfig(passport);
   app.use(cookieParser());
   app.use(
     session({
-      secret: '@#@$MYSIGN#@$#$',
-      resave: false,
-      saveUninitialized: true,
+      resave: true,
+      saveUninitialized: false,
+      secret: global.config.app.sessionSecret,
+      cookie: {
+        httpOnly: true,
+        secure: false,
+      },
     }),
   );
   app.use(compression());
   app.use(bearerToken());
+
+
+  app.use(flash());
+  app.use(passport.initialize());
+  app.use(passport.session());
 
   // view engine setup
   app.set('view engine', 'ejs');

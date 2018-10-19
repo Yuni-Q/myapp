@@ -3,7 +3,7 @@ const Keyword = require('../mongoMedel/keyword');
 
 const router = express.Router();
 
-router.post('/register', (req, res) => {
+router.post('/', (req, res) => {
   const { start, keywords } = req.body;
   // const newKeyword = null;
 
