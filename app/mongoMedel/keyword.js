@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 
-const Schema = mongoose;
-
+const { Schema } = mongoose;
 
 const Keyword = new Schema({
   start: { type: Date, default: Date.now },

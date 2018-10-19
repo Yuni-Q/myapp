@@ -1,0 +1,22 @@
+{
+	"app": {
+		"env": "developer",
+		"name": "Yuni-Q",
+		"version": "v1"
+	},
+	"database": {
+		"host": "127.0.0.1",
+		"dbname": "users",
+		"user": "root",
+		"password": null,
+		"protocol": "mysql",
+		"port": "3306",
+		"query": {
+			"debug": "!is_prod"
+		}
+	},
+	"mongo": {
+		"secret": "",
+		"mongodbUri": ""
+	}
+}

@@ -5,14 +5,17 @@ const router = express.Router();
 
 router.post('/register', (req, res) => {
   const { start, keywords } = req.body;
-  const newKeyword = null;
+  // const newKeyword = null;
 
   // create a new user if does not exist
-  const create = () => Keyword.create(start, keywords);
-
+  const create = () => {
+    const val = new Keyword();
+    val.start = start;
+    val.keywords = keywords;
+    val.save();
+  };
   // count the number of the user
   const count = () => Keyword.count({}).exec();
-
 
   const respond = () => {
     res.json({
@@ -23,18 +26,16 @@ router.post('/register', (req, res) => {
   // run when there is an error (username exists)
   const onError = error => res.status(409).json({ message: error.message });
 
-
   // check username duplication
   Keyword.find({})
     .then(create)
     .then(count)
     .then(respond)
     .catch(onError);
-  res.json(newKeyword);
+  // res.json(newKeyword);
 });
 
-
-router.get('/keywords', async (req, res, next) => {
+router.get('/', async (req, res, next) => {
   const { keywords } = req.query;
   console.log(keywords);
 
@@ -69,3 +70,5 @@ router.get('/keywords', async (req, res, next) => {
   // res.send(b);
   // res.send(c);
 });
+
+module.exports = router;
