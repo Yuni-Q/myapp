@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 const compression = require('compression');
 const bearerToken = require('express-bearer-token');
 const cors = require('cors');
+const mongoose = require('mongoose');
 
 global.config = require('config');
 
@@ -41,4 +42,14 @@ module.exports = (app) => {
   console.log('---------------------------------------------------------------');
   console.log('[%s] running by [%s]', global.config.app.name, global.config.app.env);
   console.log('\r');
+
+  // /* =======================
+  //  CONNECT TO MONGODB SERVER
+  // ==========================*/
+  mongoose.connect(global.config.mongo.mongodbUri);
+  const db = mongoose.connection;
+  db.on('error', console.error);
+  db.once('open', () => {
+    console.log('connected to mongodb server');
+  });
 };
