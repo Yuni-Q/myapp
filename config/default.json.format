@@ -3,6 +3,7 @@
 		"env": "developer",
 		"name": "Yuni-Q",
 		"version": "v1"
+		"sessionSecret": ""
 	},
 	"database": {
 		"host": "127.0.0.1",
