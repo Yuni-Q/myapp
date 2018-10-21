@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const controllers = require('../app/controllers');
 
-const API_VERSION = `/api/${global.config.app.version}`;
+// const API_VERSION = `/api/${global.config.app.version}`;
 const BASE_PATH = path.join(__dirname, '../app/controllers');
 
 function findRouter(app, dir) {
@@ -18,8 +18,8 @@ function findRouter(app, dir) {
         findRouter(app, file);
       } else {
         const localPath = `${file.split(`${BASE_PATH}/`)[1].split('.')[0]}`;
-        console.log(`${API_VERSION}/${localPath}`);
-        app.use(`${API_VERSION}/${localPath}`, controllers[localPath.replace(/\//g, '_')]);
+        console.log(`/${localPath}`);
+        app.use(`/${localPath}`, controllers[localPath.replace(/\//g, '_')]);
       }
     });
 }
