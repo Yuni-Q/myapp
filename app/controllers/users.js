@@ -1,21 +1,23 @@
-
 const express = require('express');
 const crypto = require('crypto');
 const passport = require('passport');
 const models = require('../models');
-const { isLoggedIn, isNotLoggedIn } = require('../middlewares/middlewares');
+const {
+  isLoggedIn,
+  isNotLoggedIn,
+} = require('../middlewares/middlewares');
 
 const router = express.Router();
 
 // const checkLogin = (req, res) => {
-//   const hmac = crypto.createHmac('sha256', 'yuni');
-//   let pass = hmac.update(req.session.password).digest('hex');
-//   pass = JSON.stringify(pass);
-//   if (req.session.user_name) {
-//     models.Users.findOne({
-//       where: {
-//         user_name: req.session.user_name,
-//         password: pass,
+// const hmac = crypto.createHmac('sha256', 'yuni');
+// let pass = hmac.update(req.session.password).digest('hex');
+// pass = JSON.stringify(pass);
+// if (req.session.user_name) {
+//   models.Users.findOne({
+//     where: {
+//       user_name: req.session.user_name,
+//       password: pass,
 //       },
 //     })
 //       .catch((err) => {
@@ -47,20 +49,25 @@ router.get('/', isNotLoggedIn, (req, res) => {
 // login_process
 router.post('/login', isNotLoggedIn, (req, res, next) => {
   passport.authenticate('local', (authError, user, info) => {
+    console.log(authError, user, info);
     if (authError) {
       console.error(authError);
       return next(authError);
     }
     if (!user) {
       req.flash('loginError', info.message);
-      return res.render('login', { title: 'login' });
+      return res.render('login', {
+        title: 'login',
+      });
     }
     return req.login(user, (loginError) => {
       if (loginError) {
         console.error(loginError);
         return next(loginError);
       }
-      return res.redirect('/');
+      return res.render('page', {
+        title: req.session.user_name,
+      });
     });
   })(req, res, next); // 미들웨어 내의 미들웨어에는 (req, res, next)를 붙입니다.
 });
@@ -79,6 +86,43 @@ router.get('/page', isLoggedIn, async (req, res) => {
 });
 
 router.get('/join', isNotLoggedIn, (req, res) => {
+  res.render('join', {
+    title: 'join',
+  });
+});
+
+router.post('/join', isNotLoggedIn, async (req, res) => {
+  const {
+    userName,
+    password,
+  } = req.body;
+  try {
+    const exUser = await models.Users.findOne({
+      where: {
+        userName,
+      },
+    });
+    if (exUser) {
+      req.flash('joinError', '이미 가입 된 유저 name 입니다.');
+      res.render('join', {
+        title: 'join',
+      });
+      return;
+    }
+    const hmac = crypto.createHmac('sha256', 'yuni');
+    let pass = hmac.update(password).digest('hex');
+    pass = JSON.stringify(pass);
+    models.Users.create({
+      userName,
+      password: pass,
+    });
+    res.render('login', {
+      title: 'login',
+    });
+    return;
+  } catch (error) {
+    console.log(error);
+  }
   res.render('join', {
     title: 'join',
     user: req.user,

@@ -6,11 +6,12 @@ const hmac = crypto.createHmac('sha256', 'yuni');
 
 module.exports = (passport) => {
   passport.use(new LocalStrategy({
-    usernameField: 'userName',
+    userNameField: 'userName',
     passwordField: 'password',
   }, async (userName, password, done) => {
     try {
       const exUser = await models.User.find({ where: { userName } });
+      console.log(exUser);
       if (exUser) {
         const result = await (JSON.stringify(hmac.update(password).digest('hex'))).compare(exUser.password);
         if (result) {
