@@ -60,7 +60,6 @@ module.exports = (app) => {
   // /* =======================
   //  CONNECT TO MONGODB SERVER
   // ==========================*/
-  mongoose.connect(global.config.mongo.mongodbUri);
   mongoose.connect(global.config.mongo.mongodbUri, { useNewUrlParser: true });
   const db = mongoose.connection;
   db.on('error', console.error);

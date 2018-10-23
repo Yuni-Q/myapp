@@ -6,16 +6,19 @@ const hmac = crypto.createHmac('sha256', 'yuni');
 
 module.exports = (passport) => {
   passport.use(new LocalStrategy({
-    userNameField: 'userName',
+    usernameField: 'userName',
     passwordField: 'password',
-  }, async (userName, password, done) => {
+  }, async (username, password, done) => {
+    console.log('bbbbb', username, password, done);
     try {
-      const exUser = await models.User.find({ where: { userName } });
-      console.log(exUser);
+      const exUser = await models.Users.findOne({ where: { username } });
+      console.log(exUser.dataValues);
       if (exUser) {
-        const result = await (JSON.stringify(hmac.update(password).digest('hex'))).compare(exUser.password);
+        const pwd = await JSON.stringify(hmac.update(password).digest('hex'));
+        console.log(pwd);
+        const result = await (pwd === (exUser.dataValues.password));
         if (result) {
-          done(null, exUser);
+          done(null, exUser.dataValues);
         } else {
           done(null, false, { message: '비밀번호가 일치하지 않습니다.' });
         }

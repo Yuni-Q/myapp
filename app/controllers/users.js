@@ -1,6 +1,7 @@
 const express = require('express');
 const crypto = require('crypto');
 const passport = require('passport');
+// const pp = require('../middlewares/passport')(passport);
 const models = require('../models');
 const {
   isLoggedIn,
@@ -49,7 +50,7 @@ router.get('/', isNotLoggedIn, (req, res) => {
 // login_process
 router.post('/login', isNotLoggedIn, (req, res, next) => {
   passport.authenticate('local', (authError, user, info) => {
-    console.log(authError, user, info);
+    console.log('aaaaa', authError, user, info);
     if (authError) {
       console.error(authError);
       return next(authError);
