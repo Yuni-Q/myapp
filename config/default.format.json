@@ -2,7 +2,7 @@
 	"app": {
 		"env": "developer",
 		"name": "Yuni-Q",
-		"version": "v1"
+		"version": "v1",
 		"sessionSecret": ""
 	},
 	"database": {
