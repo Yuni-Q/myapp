@@ -1,8 +1,9 @@
+
 const express = require('express');
-const crypto = require('crypto');
 const passport = require('passport');
-// const pp = require('../middlewares/passport')(passport);
 const models = require('../models');
+const crypto = require('../lib/crypto');
+const query = require('../models/query');
 const {
   isLoggedIn,
   isNotLoggedIn,
@@ -35,8 +36,8 @@ const router = express.Router();
 /* GET users listing. */
 router.get('/', isNotLoggedIn, (req, res) => {
   if (req.session.user_name) {
-    console.log(req.session);
-    console.log(req.session.user_name);
+    // console.log(req.session);
+    // console.log(req.session.user_name);
     res.render('index', {
       title: req.session.user_name,
     });
@@ -50,9 +51,7 @@ router.get('/', isNotLoggedIn, (req, res) => {
 // login_process
 router.post('/login', isNotLoggedIn, (req, res, next) => {
   passport.authenticate('local', (authError, user, info) => {
-    console.log('aaaaa', authError, user, info);
     if (authError) {
-      console.error(authError);
       return next(authError);
     }
     if (!user) {
@@ -63,7 +62,6 @@ router.post('/login', isNotLoggedIn, (req, res, next) => {
     }
     return req.login(user, (loginError) => {
       if (loginError) {
-        console.error(loginError);
         return next(loginError);
       }
       return res.render('page', {
@@ -98,11 +96,7 @@ router.post('/join', isNotLoggedIn, async (req, res) => {
     password,
   } = req.body;
   try {
-    const exUser = await models.Users.findOne({
-      where: {
-        userName,
-      },
-    });
+    const exUser = query.user.findOne(userName);
     if (exUser) {
       req.flash('joinError', '이미 가입 된 유저 name 입니다.');
       res.render('join', {
@@ -110,9 +104,7 @@ router.post('/join', isNotLoggedIn, async (req, res) => {
       });
       return;
     }
-    const hmac = crypto.createHmac('sha256', 'yuni');
-    let pass = hmac.update(password).digest('hex');
-    pass = JSON.stringify(pass);
+    const pass = crypto(password);
     models.Users.create({
       userName,
       password: pass,
@@ -132,12 +124,11 @@ router.post('/join', isNotLoggedIn, async (req, res) => {
 });
 
 router.post('/page', isLoggedIn, (req, res) => {
-  const hmac = crypto.createHmac('sha256', 'yuni');
-  let pass = hmac.update(req.body.password).digest('hex');
-  pass = JSON.stringify(pass);
+  const { userName, password } = req.body;
+  const pwd = crypto(password);
   models.Users.create({
-    user_name: req.body.user_name,
-    password: pass,
+    userName,
+    password: pwd,
   })
     .then((result) => {
       console.log(result.dataValues.id);
@@ -149,13 +140,12 @@ router.post('/page', isLoggedIn, (req, res) => {
 });
 
 router.delete('/', isLoggedIn, (req, res) => {
-  const hmac = crypto.createHmac('sha256', 'yuni');
-  let pass = hmac.update(req.session.password).digest('hex');
-  pass = JSON.stringify(pass);
+  const { userName, password } = req.session;
+  const pwd = crypto(password);
   models.Users.destroy({
     where: {
-      user_name: req.session.user_name,
-      password: pass,
+      userName,
+      password: pwd,
     },
   })
     .then(() => {

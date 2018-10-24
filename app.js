@@ -1,14 +1,17 @@
-const createError = require('http-errors');
-const express = require('express');
+
 const path = require('path');
 const logger = require('morgan');
-
+const express = require('express');
+const schedule = require('node-schedule');
+const createError = require('http-errors');
 const swaggerUi = require('swagger-ui-express');
 // const indexRouter = require('./routes/index');
 // const usersRouter = require('./routes/users');
+const route = require('./config/routes');
 const swaggerDocument = require('./swagger.json');
 const environment = require('./config/environment');
-const route = require('./config/routes');
+const daliyLogger = require('./app/lib/logger');
+
 
 const app = express();
 
@@ -22,6 +25,16 @@ app.use(express.static(path.join(__dirname, 'public')));
 environment(app);
 route(app);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+
+const rule = new schedule.RecurrenceRule();
+// rule.hour = 00;
+// rule.minute = 30;
+rule.second = 30;
+
+schedule.scheduleJob(rule, () => {
+  daliyLogger.info('info');
+});
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

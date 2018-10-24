@@ -23,7 +23,7 @@ const sequelize = new Sequelize(global.config.database.dbname, global.config.dat
 
 fs
   .readdirSync(__dirname)
-  .filter(file => (file.indexOf('.') !== 0) && (file !== 'index.js') && (file !== '_query.js') && (file !== 'v2'))
+  .filter(file => (file.indexOf('.') !== 0) && (file !== 'index.js') && (file !== 'query.js') && (file !== 'v2'))
   .forEach((file) => {
     const model = sequelize.import(path.join(__dirname, file));
     db[model.name] = model;
