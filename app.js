@@ -10,7 +10,7 @@ const swaggerUi = require('swagger-ui-express');
 const route = require('./config/routes');
 const swaggerDocument = require('./swagger.json');
 const environment = require('./config/environment');
-const daliyLogger = require('./app/lib/logger');
+const daliyLogger = require('./lib/logger');
 
 
 const app = express();
