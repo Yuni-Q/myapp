@@ -1,7 +1,7 @@
 
 const express = require('express');
 const models = require('../../models');
-const crypto = require('../../lib/crypto');
+const crypto = require('../../../lib/crypto');
 // const query = require('../../models/query');
 const { isLoggedIn } = require('../../middlewares/middlewares');
 

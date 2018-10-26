@@ -2,7 +2,7 @@
 const express = require('express');
 const passport = require('passport');
 const models = require('../models');
-const crypto = require('../lib/crypto');
+const crypto = require('../../lib/crypto');
 const query = require('../models/query');
 const {
   isLoggedIn,
