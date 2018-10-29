@@ -3,8 +3,6 @@ const express = require('express');
 const passport = require('passport');
 const models = require('../models');
 const crypto = require('../../lib/crypto');
-const User = require('../mongoMedel/user');
-const query = require('../mongoMedel/query');
 const {
   isLoggedIn,
   isNotLoggedIn,
@@ -82,43 +80,6 @@ router.get('/page', isLoggedIn, async (req, res) => {
   // await checkLogin(req, res);
   res.render('page', {
     title: req.session.user_name,
-  });
-});
-
-router.get('/join', isNotLoggedIn, (req, res) => {
-  res.render('join', {
-    title: 'join',
-  });
-});
-
-router.post('/join', isNotLoggedIn, async (req, res) => {
-  const {
-    userName,
-    password,
-  } = req.body;
-  console.log(req.body);
-  try {
-    const exUser = await User.findOne({ userName });
-    if (exUser) {
-      req.flash('joinError', '이미 가입 된 유저 name 입니다.');
-      res.render('join', {
-        title: 'join',
-      });
-      return;
-    }
-    const pwd = await crypto.makePssword.makePssword(password);
-    await query.User.create(userName, pwd);
-    res.render('login', {
-      title: 'login',
-    });
-    return;
-  } catch (error) {
-    console.log(error);
-  }
-  res.render('join', {
-    title: 'join',
-    user: req.user,
-    joinError: req.flash('joinError'),
   });
 });
 
