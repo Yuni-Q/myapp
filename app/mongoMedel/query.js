@@ -19,7 +19,7 @@ exports.keywords = {
   },
 
   aggregate(keywords) {
-    Keyword.aggregate([{
+    return Keyword.aggregate([{
       $unwind: '$keywords',
     },
     {

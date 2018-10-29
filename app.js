@@ -27,14 +27,14 @@ route(app);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 
-const rule = new schedule.RecurrenceRule();
-// rule.hour = 00;
-// rule.minute = 30;
-rule.second = 30;
+// const rule = new schedule.RecurrenceRule();
+// // rule.hour = 00;
+// // rule.minute = 30;
+// rule.second = 30;
 
-schedule.scheduleJob(rule, () => {
-  daliyLogger.info('info');
-});
+// schedule.scheduleJob(rule, () => {
+//   daliyLogger.info('info');
+// });
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

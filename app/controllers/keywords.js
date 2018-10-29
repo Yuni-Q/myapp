@@ -25,12 +25,15 @@ router.post('/', async (req, res) => {
     .catch(onError);
 });
 
-router.get('/', async (req, res, next) => {
-  const { keywords } = req.query;
-
-  await query.keywords.aggregate(keywords)
-    .then(result => res.send(result))
-    .catch(err => next(err));
+router.get('/:keywords', async (req, res, next) => {
+  const { keywords } = req.params;
+  console.log(keywords);
+  try {
+    const result = await query.keywords.aggregate(keywords);
+    res.json(result);
+  } catch (err) {
+    next(err);
+  }
 });
 
 module.exports = router;
