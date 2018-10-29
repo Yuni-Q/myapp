@@ -1,4 +1,5 @@
 const Keyword = require('./keyword');
+const User = require('./user');
 
 exports.keywords = {
   create(start, keywords) {
@@ -39,5 +40,23 @@ exports.keywords = {
       },
     },
     ]);
+  },
+};
+exports.User = {
+  create(userName, password) {
+    const user = new User();
+    user.userName = userName;
+    user.password = password;
+    return user.save();
+  },
+
+  count() {
+    return User.count({}).exec();
+  },
+
+  respond() {
+    return {
+      message: 'registered successfully',
+    };
   },
 };

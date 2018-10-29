@@ -2,7 +2,7 @@
 const path = require('path');
 const logger = require('morgan');
 const express = require('express');
-const schedule = require('node-schedule');
+// const schedule = require('node-schedule');
 const createError = require('http-errors');
 const swaggerUi = require('swagger-ui-express');
 // const indexRouter = require('./routes/index');
@@ -10,7 +10,7 @@ const swaggerUi = require('swagger-ui-express');
 const route = require('./config/routes');
 const swaggerDocument = require('./swagger.json');
 const environment = require('./config/environment');
-const daliyLogger = require('./lib/logger');
+// const daliyLogger = require('./lib/logger');
 
 
 const app = express();

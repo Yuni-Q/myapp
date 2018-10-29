@@ -7,20 +7,20 @@ const crypto = require('crypto');
 const { Schema } = mongoose;
 
 const User = new Schema({
-  username: String,
+  userName: String,
   password: String,
   admin: { type: Boolean, default: false },
 });
 
 // create new User document
-User.statics.create = (username, password) => {
+User.statics.create = (userName, password) => {
   const encrypted = crypto
     .createHmac('sha1', global.config.mongo.secret)
     .update(password)
     .digest('base64');
 
   const user = new this({
-    username,
+    userName,
     password: encrypted,
   });
 
@@ -29,7 +29,7 @@ User.statics.create = (username, password) => {
 };
 
 // find one user by using username
-User.statics.findOneByUsername = username => this.findOne({ username }).exec();
+User.statics.findOneByUsername = userName => this.find({ userName }).exec();
 
 // verify the password of the User documment
 User.methods.verify = (password) => {

@@ -1,7 +1,7 @@
 
 const express = require('express');
 const crypto = require('../../../lib/crypto');
-const query = require('../../models/query');
+const user = require('../../mongoMedel/user');
 const { isNotLoggedIn } = require('../../middlewares/middlewares');
 
 const router = express.Router();
@@ -18,8 +18,10 @@ router.post('/join', isNotLoggedIn, async (req, res) => {
     userName,
     password,
   } = req.body;
+  console.log(req.body);
   try {
-    const exUser = query.user.findOne(userName);
+    const exUser = await user.findOneByUsername(userName);
+    console.log(exUser);
     if (exUser) {
       req.flash('joinError', '이미 가입 된 유저 name 입니다.');
       res.render('join', {
@@ -28,7 +30,7 @@ router.post('/join', isNotLoggedIn, async (req, res) => {
       return;
     }
     const pwd = crypto(password);
-    await query.user.create(userName, pwd);
+    await user.create(userName, pwd);
     res.render('login', {
       title: 'login',
     });
