@@ -1,5 +1,7 @@
-const Keyword = require('./keyword');
 const User = require('./user');
+const Post = require('./post');
+const Keyword = require('./keyword');
+
 
 exports.keywords = {
   create(start, keywords) {
@@ -52,6 +54,26 @@ exports.User = {
 
   count() {
     return User.count({}).exec();
+  },
+
+  respond() {
+    return {
+      message: 'registered successfully',
+    };
+  },
+};
+
+exports.Post = {
+  create(todo, date, userId) {
+    const post = new Post();
+    post.todo = todo;
+    post.date = date;
+    post.userId = userId;
+    return post.save();
+  },
+
+  count() {
+    return Post.count({}).exec();
   },
 
   respond() {

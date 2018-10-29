@@ -1,18 +1,20 @@
 
 const local = require('./localStrategy');
-const models = require('../../models');
+const User = require('../../mongoMedel/user');
 
 module.exports = (passport) => {
   passport.serializeUser((user, done) => {
     // 첫번째인자 error
+    console.log(user.id);
     done(null, user.id);
   });
 
   // 매 요청 시 실행
-  passport.deserializeUser((id, done) => {
-    models.User.find({ where: { id } })
-      .then(user => done(null, user))
-      .catch(err => done(err));
+  passport.deserializeUser(async (_id, done) => {
+    const user = await User.findOne({ _id });
+    console.log(user);
+    console.log(user);
+    done(null, user);
   });
 
   local(passport);

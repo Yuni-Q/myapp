@@ -1,8 +1,6 @@
-
 const express = require('express');
 const passport = require('passport');
 const User = require('../mongoMedel/user');
-const crypto = require('../helpers/cryptoHelper');
 const {
   isLoggedIn,
   isNotLoggedIn,
@@ -50,29 +48,19 @@ router.post('/', isNotLoggedIn, (req, res, next) => {
   })(req, res, next); // 미들웨어 내의 미들웨어에는 (req, res, next)를 붙입니다.
 });
 
-router.get('/logout', isLoggedIn, (req, res) => {
-  req.logout();
-  req.session.destroy();
-  res.redirect('/');
+router.get('/logout', isLoggedIn, async (req, res) => {
+  await req.logout();
+  // await req.session.destroy();
+  res.redirect('/users');
 });
 
-router.delete('/', isLoggedIn, (req, res) => {
-  const { userName, password } = req.session;
-  const pwd = crypto(password);
-  User.remove({
-    where: {
-      userName,
-      password: pwd,
-    },
-  })
-    .then(() => {
-      req.session.destroy(() => {
-        console.log('logout');
-      });
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+router.delete('/destory', isLoggedIn, async (req, res) => {
+  const { user } = req.session.passport;
+
+  await User.deleteOne({ _id: user });
+  await req.session.destroy(() => {
+    console.log('logout');
+  });
   res.redirect('/users');
 });
 

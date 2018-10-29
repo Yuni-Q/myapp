@@ -7,7 +7,7 @@
   },
   "private": true,
   "scripts": {
-    "start": "node ./bin/www",
+    "start": "nodemon ./bin/www",
     "debug": "node --inspect-brk=9229 app.js",
     "worker": "pm2 start ./bin/worker.js -i 0 --name 'worker'",
     "batch": "export NODE_ENV=staging && pm2 start ./app.js --name 'batch'",
