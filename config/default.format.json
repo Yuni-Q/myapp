@@ -1,6 +1,6 @@
 {
 	"app": {
-		"env": "developer",
+		"env": "default",
 		"name": "Yuni-Q",
 		"version": "v1",
 		"sessionSecret": ""
