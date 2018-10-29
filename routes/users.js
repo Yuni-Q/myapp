@@ -9,10 +9,10 @@ const checkLogin = (req, res) => {
   const hmac = crypto.createHmac('sha256', 'yuni');
   let pass = hmac.update(req.session.password).digest('hex');
   pass = JSON.stringify(pass);
-  if (req.session.user_name) {
+  if (req.session.userName) {
     models.Users.findOne({
       where: {
-        user_name: req.session.user_name,
+        userName: req.session.userName,
         password: pass,
       },
     })
@@ -28,11 +28,11 @@ const checkLogin = (req, res) => {
 };
 /* GET users listing. */
 router.get('/', (req, res) => {
-  if (req.session.user_name) {
+  if (req.session.userName) {
     console.log(req.session);
-    console.log(req.session.user_name);
+    console.log(req.session.userName);
     res.render('index', {
-      title: req.session.user_name,
+      title: req.session.userName,
     });
   } else {
     res.render('login', {
@@ -48,16 +48,16 @@ router.post('/login_process', (req, res) => {
   console.log(models);
   models.Users.findOne({
     where: {
-      user_name: req.body.user_name,
+      userName: req.body.userName,
       password: pass,
     },
   })
     .then((result) => {
       if (result) {
-        req.session.user_name = req.body.user_name;
+        req.session.userName = req.body.userName;
         req.session.password = req.body.password;
         res.render('page', {
-          title: req.body.user_name,
+          title: req.body.userName,
         });
       } else {
         res.render('login', {
@@ -83,7 +83,7 @@ router.get('/logout', (req, res) => {
 router.get('/page', async (req, res) => {
   await checkLogin(req, res);
   res.render('page', {
-    title: req.session.user_name,
+    title: req.session.userName,
   });
 });
 
@@ -98,7 +98,7 @@ router.post('/join_process', (req, res) => {
   let pass = hmac.update(req.body.password).digest('hex');
   pass = JSON.stringify(pass);
   models.Users.create({
-    user_name: req.body.user_name,
+    userName: req.body.userName,
     password: pass,
   })
     .then((result) => {
@@ -116,7 +116,7 @@ router.get('/delete', (req, res) => {
   pass = JSON.stringify(pass);
   models.Users.destroy({
     where: {
-      user_name: req.session.user_name,
+      userName: req.session.userName,
       password: pass,
     },
   })

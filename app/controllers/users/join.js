@@ -1,9 +1,9 @@
 
 const express = require('express');
-const crypto = require('../../../lib/crypto');
+const crypto = require('../../helpers/cryptoHelper');
 const User = require('../../mongoMedel/user');
 const query = require('../../mongoMedel/query');
-const { isNotLoggedIn } = require('../../middlewares/middlewares');
+const { isNotLoggedIn } = require('../../middlewares/passport/checkLogin');
 
 const router = express.Router();
 

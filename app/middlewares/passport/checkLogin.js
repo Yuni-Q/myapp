@@ -2,6 +2,7 @@
 // Passport는 req 객체에 isAuthenticated 메서드를 추가합니다.
 // 로그인 중이면 true
 exports.isLoggedIn = (req, res, next) => {
+  console.log(req.isAuthenticated());
   if (req.isAuthenticated()) {
     next();
   } else {

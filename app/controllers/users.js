@@ -1,54 +1,32 @@
 
 const express = require('express');
 const passport = require('passport');
-const models = require('../models');
-const crypto = require('../../lib/crypto');
+const User = require('../mongoMedel/user');
+const crypto = require('../helpers/cryptoHelper');
 const {
   isLoggedIn,
   isNotLoggedIn,
-} = require('../middlewares/middlewares');
+} = require('../middlewares/passport/checkLogin');
 
 const router = express.Router();
 
-// const checkLogin = (req, res) => {
-// const hmac = crypto.createHmac('sha256', 'yuni');
-// let pass = hmac.update(req.session.password).digest('hex');
-// pass = JSON.stringify(pass);
-// if (req.session.user_name) {
-//   models.Users.findOne({
-//     where: {
-//       user_name: req.session.user_name,
-//       password: pass,
-//       },
-//     })
-//       .catch((err) => {
-//         // TODO: error handling
-//         console.log(err);
-//       });
-//   } else {
-//     res.render('login', {
-//       title: 'login',
-//     });
-//   }
-// };
-
 /* GET users listing. */
 router.get('/', isNotLoggedIn, (req, res) => {
-  if (req.session.user_name) {
+  if (req.session.userName) {
     // console.log(req.session);
-    // console.log(req.session.user_name);
+    // console.log(req.session.userName);
     res.render('index', {
-      title: req.session.user_name,
+      title: req.session.userName,
     });
   } else {
     res.render('login', {
       title: 'login',
+      messages: '로그인해 주세요 !!',
     });
   }
 });
 
-// login_process
-router.post('/login', isNotLoggedIn, (req, res, next) => {
+router.post('/', isNotLoggedIn, (req, res, next) => {
   passport.authenticate('local', (authError, user, info) => {
     if (authError) {
       return next(authError);
@@ -57,15 +35,17 @@ router.post('/login', isNotLoggedIn, (req, res, next) => {
       req.flash('loginError', info.message);
       return res.render('login', {
         title: 'login',
+        messages: '로그인해 주세요 !!',
       });
     }
     return req.login(user, (loginError) => {
       if (loginError) {
         return next(loginError);
       }
-      return res.render('page', {
-        title: req.session.user_name,
-      });
+      return res.redirect('/users/page');
+      // return res.render('page', {
+      //   title: req.session.userName,
+      // });
     });
   })(req, res, next); // 미들웨어 내의 미들웨어에는 (req, res, next)를 붙입니다.
 });
@@ -76,33 +56,10 @@ router.get('/logout', isLoggedIn, (req, res) => {
   res.redirect('/');
 });
 
-router.get('/page', isLoggedIn, async (req, res) => {
-  // await checkLogin(req, res);
-  res.render('page', {
-    title: req.session.user_name,
-  });
-});
-
-router.post('/page', isLoggedIn, (req, res) => {
-  const { userName, password } = req.body;
-  const pwd = crypto(password);
-  models.Users.create({
-    userName,
-    password: pwd,
-  })
-    .then((result) => {
-      console.log(result.dataValues.id);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-  res.redirect('/');
-});
-
 router.delete('/', isLoggedIn, (req, res) => {
   const { userName, password } = req.session;
   const pwd = crypto(password);
-  models.Users.destroy({
+  User.remove({
     where: {
       userName,
       password: pwd,
@@ -116,7 +73,7 @@ router.delete('/', isLoggedIn, (req, res) => {
     .catch((err) => {
       console.log(err);
     });
-  res.redirect('/');
+  res.redirect('/users');
 });
 
 module.exports = router;

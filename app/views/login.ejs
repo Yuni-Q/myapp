@@ -14,7 +14,10 @@
   <p>Welcome to
     <%= title %>
   </p>
-  <form action="/users/login" method="post">
+  <div class="flash">
+    <%= messages %>
+  </div>
+  <form action="/users" method="post">
     <label for="userName"></label>
     <input type="text" name="userName" placeholder="userName" id="userName">
     <br>

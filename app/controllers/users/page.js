@@ -1,34 +1,21 @@
 
 const express = require('express');
-const models = require('../../models');
-const crypto = require('../../../lib/crypto');
-// const query = require('../../models/query');
-const { isLoggedIn } = require('../../middlewares/middlewares');
+const { isLoggedIn } = require('../../middlewares/passport/checkLogin');
 
 const router = express.Router();
 
 
-router.get('/page', isLoggedIn, async (req, res) => {
+router.get('/', isLoggedIn, async (req, res) => {
+  // router.get('/', async (req, res) => {
   // await checkLogin(req, res);
   res.render('page', {
-    title: req.session.userName,
+    // title: req.session.userName,
+    title: 'aa',
   });
 });
 
-router.post('/page', isLoggedIn, async (req, res) => {
-  const { userName, password } = req.body;
-  const pwd = crypto(password);
-  await models.Users.create({
-    userName,
-    password: pwd,
-  })
-    .then((result) => {
-      console.log(result.dataValues.id);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-  res.redirect('/');
+router.post('/', isLoggedIn, async (req, res) => {
+  res.redirect('/users/post');
 });
 
 module.exports = router;
