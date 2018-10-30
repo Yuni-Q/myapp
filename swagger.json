@@ -2,40 +2,40 @@
   "swagger": "2.0",
   "info": {
     "version": "1.0.0",
-    "title": "Title",
-    "description": "Yet Another Node.js Blogg Application API",
+    "title": "Yuni-Q",
+    "description": "Make Node.js",
     "license": {
       "name": "MIT",
       "url": "https://opensource.org/licenses/MIT"
     }
   },
-  "host": "localhost:3000",
-  "basePath": "/api/v1",
+  "host": "mighty-gorge-25136.herokuapp.com",
+  "basePath": "/",
   "tags": [
     {
       "name": "Users",
       "description": "API for users in the system"
     }
   ],
-  "schemes": ["http"],
-  "consumes": ["application/json"],
-  "produces": ["application/json"],
+  "schemes": [
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
   "paths": {
     "/users": {
-      "post": {
-        "tags": ["Users"],
-        "description": "Create new user in system",
-        "parameters": [
-          {
-            "name": "user",
-            "in": "body",
-            "description": "User that we want to create",
-            "schema": {
-              "$ref": "#/definitions/User"
-            }
-          }
+      "get": {
+        "tags": [
+          "Users"
         ],
-        "produces": ["application/json"],
+        "description": "로그인 페이지 호출",
+        "produces": [
+          "application/json"
+        ],
         "responses": {
           "200": {
             "description": "New user is created",
@@ -45,9 +45,34 @@
           }
         }
       },
-      "get": {
-        "tags": ["Users"],
-        "summary": "Get all users in system",
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "description": "login",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "userName": {
+                  "type": "string",
+                  "example": "aa"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "aa"
+                }
+              }
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -56,21 +81,12 @@
             }
           }
         }
-      }
-    },
-    "/users/{userId}": {
-      "parameters": [
-        {
-          "name": "userId",
-          "in": "path",
-          "required": true,
-          "description": "ID of user that we want to find",
-          "type": "string"
-        }
-      ],
-      "get": {
-        "tags": ["Users"],
-        "summary": "Get user with given ID",
+      },
+      "delete": {
+        "tags": [
+          "Users"
+        ],
+        "description": "logout",
         "responses": {
           "200": {
             "description": "User is found",
@@ -79,10 +95,14 @@
             }
           }
         }
-      },
-      "delete": {
-        "summary": "Delete user with given ID",
-        "tags": ["Users"],
+      }
+    },
+    "/member": {
+      "get": {
+        "description": "회원 가입 페이지 호출",
+        "tags": [
+          "members"
+        ],
         "responses": {
           "200": {
             "description": "User is deleted",
@@ -92,16 +112,28 @@
           }
         }
       },
-      "put": {
-        "summary": "Update user with give ID",
-        "tags": ["Users"],
+      "post": {
+        "summary": "회원 가입",
+        "tags": [
+          "members"
+        ],
         "parameters": [
           {
-            "name": "user",
+            "name": "body",
             "in": "body",
-            "description": "User with new values of properties",
+            "required": true,
             "schema": {
-              "$ref": "#/definitions/User"
+              "type": "object",
+              "properties": {
+                "userName": {
+                  "type": "string",
+                  "example": "aa"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "aa"
+                }
+              }
             }
           }
         ],
@@ -118,27 +150,23 @@
   },
   "definitions": {
     "User": {
-      "required": ["email", "_id"],
+      "required": [
+        "userName",
+        "password"
+      ],
       "properties": {
         "_id": {
           "type": "string",
           "uniqueItems": true
         },
-        "email": {
+        "userName": {
           "type": "string",
           "uniqueItems": true
         },
-        "lastName": {
-          "type": "string"
-        },
-        "firstName": {
+        "password": {
           "type": "string"
         }
       }
-    },
-    "Users": {
-      "type": "array",
-      "$ref": "#/definitions/User"
     }
   }
 }

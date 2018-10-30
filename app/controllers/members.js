@@ -49,8 +49,9 @@ router.post('/', isNotLoggedIn, async (req, res) => {
 router.delete('/', isLoggedIn, async (req, res) => {
   const { _id } = req.user;
   await User.deleteOne({ _id });
-  const result = await req.session.destroy(() => {
+  await req.session.destroy(() => {
   });
+  const result = 1;
   res.json(result);
 });
 

@@ -46,8 +46,10 @@ router.post('/', isNotLoggedIn, (req, res, next) => {
 });
 
 router.delete('/', isLoggedIn, async (req, res) => {
-  const result = await req.logout();
+  await req.logout();
+
   await req.session.destroy();
+  const result = 1;
   res.json(result);
 });
 
