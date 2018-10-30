@@ -54,14 +54,13 @@ router.get('/logout', isLoggedIn, async (req, res) => {
   res.redirect('/users');
 });
 
-router.delete('/destory', isLoggedIn, async (req, res) => {
-  const { user } = req.session.passport;
-
-  await User.deleteOne({ _id: user });
-  await req.session.destroy(() => {
+router.delete('/', isLoggedIn, async (req, res) => {
+  const { _id } = req.user;
+  await User.deleteOne({ _id });
+  const result = await req.session.destroy(() => {
     console.log('logout');
   });
-  res.redirect('/users');
+  res.json(result);
 });
 
 module.exports = router;

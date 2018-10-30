@@ -10,7 +10,7 @@ const router = express.Router();
 router.get('/', isLoggedIn, async (req, res) => {
   const posts = await Post.find({});
   res.render('page', {
-    title: req.session.userName,
+    title: req.user.userName,
     posts,
   });
 });

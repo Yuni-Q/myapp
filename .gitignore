@@ -66,3 +66,4 @@ default.json
 developer.json
 config.json
 development.json
+production.json
