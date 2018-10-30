@@ -210,29 +210,22 @@
           "posts"
         ],
         "responses": {
-          "200": {
-            "description": "User is deleted",
-            "schema": {
-              "$ref": "#/definitions/Post"
-            }
-          }
+          "200": {}
         }
       }
     },
-    "/posts/:_id/edit": {
+    "/posts/{_id}/edit": {
       "get": {
         "summary": "게시판 수정 페이지 호출",
         "tags": [
           "posts"
         ],
-        "parameters": [
-          {
-            "name": "_id",
-            "in": "params",
-            "type": "string",
-            "default": "aaaaa"
-          }
-        ],
+        "parameters": [{
+          "name": "_id",
+          "in": "path",
+          "type": "string",
+          "default": "aaaaa"
+        }],
         "responses": {
           "200": {
             "description": "User is deleted",
@@ -243,34 +236,57 @@
         }
       }
     },
-    "/posts/:_id": {
+    "/posts/{_id}": {
+      "get": {
+        "summary": "게시글 수정",
+        "tags": [
+          "posts"
+        ],
+        "parameters": [{
+          "name": "_id",
+          "in": "path",
+          "type": "string",
+          "default": "aaaaa"
+        }],
+        "responses": {
+          "200": {
+            "description": "User is deleted",
+            "schema": {
+              "$ref": "#/definitions/Post"
+            }
+          }
+        }
+      },
       "put": {
         "summary": "게시글 수정",
         "tags": [
           "posts"
         ],
         "parameters": [{
-          "name": "body",
-          "in": "body",
-          "required": true,
-          "schema": {
-            "type": "object",
-            "properties": {
-              "_id": {
-                "type": "string",
-                "example": "aaaaaa"
-              },
-              "todo": {
-                "type": "string",
-                "example": "aa"
-              },
-              "date": {
-                "type": "date",
-                "example": "2018-10-30"
+            "name": "_id",
+            "in": "path",
+            "type": "string",
+            "default": "aaaaa"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "todo": {
+                  "type": "string",
+                  "example": "aa"
+                },
+                "date": {
+                  "type": "date",
+                  "example": "2018-10-30"
+                }
               }
             }
           }
-        }],
+        ],
         "responses": {
           "200": {
             "description": "User is deleted",
@@ -285,21 +301,82 @@
         "tags": [
           "posts"
         ],
-        "parameters": [
-          {
-            "name": "_id",
-            "in": "query",
-            "type": "string",
-            "default": "aaaaa"
-          }
+        "parameters": [{
+          "name": "_id",
+          "in": "path",
+          "type": "string",
+          "default": "aaaaa"
+        }],
+        "responses": {
+          "200": {}
+        }
+      }
+    },
+    "/main": {
+      "get": {
+        "summary": "login 페이지로 갈 수 있는 페이지",
+        "tags": [
+          "main"
         ],
         "responses": {
-          "200": {
-            "description": "User is deleted",
-            "schema": {
-              "$ref": "#/definitions/Post"
+          "200": {}
+        }
+      }
+    },
+    "/main/movies": {
+      "get": {
+        "summary": "영화 목록을 받아와서 사이즈 순으로 정렬",
+        "tags": [
+          "main"
+        ],
+        "responses": {
+          "200": {}
+        }
+      }
+    },
+    "/keywords": {
+      "post": {
+        "summary": "keywords 생성",
+        "tags": [
+          "keywords"
+        ],
+        "parameters": [{
+          "name": "body",
+          "in": "body",
+          "required": true,
+          "schema": {
+            "type": "object",
+            "properties": {
+              "keywords": {
+                "type": "array",
+                "example": "aa"
+              },
+              "date": {
+                "type": "date",
+                "example": "2018-10-30"
+              }
             }
           }
+        }],
+        "responses": {
+          "200": {}
+        }
+      }
+    },
+    "/keywords/{keywords}": {
+      "get": {
+        "summary": "keywords 생성",
+        "tags": [
+          "keywords"
+        ],
+        "parameters": [{
+          "name": "keywords",
+          "in": "path",
+          "type": "string",
+          "default": "야식"
+        }],
+        "responses": {
+          "200": {}
         }
       }
     }

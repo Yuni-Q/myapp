@@ -1,0 +1,50 @@
+<%- include('../layouts/header'); -%>
+
+    <p>Welcome to
+        <%= title %>
+    </p>
+    <div>
+        <table border="1">
+            <tr>
+                <th>todo</th>
+                <th>date</th>
+                <th>수정</th>
+                <th>삭제</th>
+            </tr>
+
+                    <tr>
+                        <td>
+                            <%= posts.todo %>
+                        </td>
+                        <td>
+                            <%= posts.date %>
+                        </td>
+                        <% if (user._id == posts.userId) { %>
+                            <td>
+                                <a href="/posts/<%= posts._id %>/edit">수정</a>
+                            </td>
+                            <td>
+                                <button onclick="deletePost('<%= posts._id %>')">삭제</button>
+                            </td>
+                            <% } %>
+                    </tr>
+        </table>
+
+
+    </div>
+    <a href="/posts/create">글 작성</a>
+    <script type="text/javascript" charset="utf-8">
+        function deletePost(_id) {
+            $.ajax({
+                url: "/posts/" + _id,
+                type: 'delete',
+                success: function (retdata) {
+                    console.log(retdata);
+                    window.location.href = '/posts';
+                }
+            });
+        };
+    </script>
+    </body>
+
+    </html>

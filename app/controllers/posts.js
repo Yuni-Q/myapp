@@ -25,6 +25,16 @@ router.post('/', isLoggedIn, async (req, res) => {
   res.json(result);
 });
 
+router.get('/:_id', isLoggedIn, async (req, res) => {
+  const { _id } = req.params;
+  const posts = await Post.findOne({ _id });
+  res.render('./posts/show', {
+    title: 'Show',
+    posts,
+    user: req.user,
+  });
+});
+
 router.get('/create', isLoggedIn, async (req, res) => {
   res.render('./posts/create', {
     title: '글쓰기',
