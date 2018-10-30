@@ -9,7 +9,7 @@ const router = express.Router();
 
 
 router.get('/', isLoggedIn, async (req, res) => {
-  const posts = await Post.find({});
+  const posts = await Post.find({}).sort({ date: 1 });
   console.log(posts);
   res.render('./posts/index', {
     title: req.user.userName,
