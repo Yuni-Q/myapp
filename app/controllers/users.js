@@ -30,8 +30,8 @@ router.post('/', isNotLoggedIn, (req, res, next) => {
     }
     if (!user) {
       req.flash('loginError', info.message);
-      res.render('./users/index', {
-        title: 'users',
+      return res.render('./users/index', {
+        title: info.message,
         messages: '올바르지 않습니다. !!',
         user: null,
       });

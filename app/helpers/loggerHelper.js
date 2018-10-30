@@ -28,7 +28,7 @@ const logger = winston.createLogger({
     }),
     // new winston.transports.Console(),
     new winston.transports.DailyRotateFile({
-      filename: './logs/app-debug-%DATE%.log',
+      filename: '../../logs/app-debug-%DATE%.log',
       datePattern: 'YYYY-MM-DD',
       level: 'debug',
     }),
