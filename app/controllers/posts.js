@@ -10,6 +10,7 @@ const router = express.Router();
 
 router.get('/', isLoggedIn, async (req, res) => {
   const posts = await Post.find({});
+  console.log(posts);
   res.render('./posts/index', {
     title: req.user.userName,
     posts,
