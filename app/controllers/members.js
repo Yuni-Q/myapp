@@ -33,7 +33,7 @@ router.post('/', isNotLoggedIn, async (req, res) => {
       });
       return;
     }
-    const pwd = await crypto.makePssword.makePssword(password);
+    const pwd = await crypto.makePssword(password);
     const result = await query.User.create(userName, pwd);
     res.json(result);
     return;

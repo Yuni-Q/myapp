@@ -55,7 +55,6 @@ router.put('/', isLoggedIn, async (req, res) => {
 router.delete('/', isLoggedIn, async (req, res) => {
   const { _id } = req.body;
   const result = await Post.deleteOne({ _id });
-  console.log('result', result);
   res.json(result);
 });
 

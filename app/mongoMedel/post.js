@@ -29,7 +29,6 @@ Post.methods.verify = todo => this.todo === todo;
 
 
 // Keyword.methods.assignAdmin = function() {
-//   console.log(this);
 //   this.admin = true;
 //   return this.save();
 // };

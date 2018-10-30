@@ -40,7 +40,6 @@
     <a href="/posts/create">글 작성</a>
     <script type="text/javascript" charset="utf-8">
         function deletePost(_id) {
-            console.log(_id);
             $.ajax({
                 url: "/posts",
                 type: 'delete',
@@ -49,8 +48,6 @@
                     _id: _id,
                 },
                 success: function (retdata) {
-                    console.log(retdata);
-                    console.log(retdata);
                     console.log(retdata);
                     window.location.href = '/posts';
                 }

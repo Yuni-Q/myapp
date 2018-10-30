@@ -54,7 +54,6 @@ router.get('/movies', async (req, res) => {
         result.forEach((e) => {
           e.size += ' MB';
         });
-        // console.log(result);
         console.timeEnd();
         res.json(result);
       }

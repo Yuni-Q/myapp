@@ -10,8 +10,6 @@ const router = express.Router();
 /* GET users listing. */
 router.get('/', isNotLoggedIn, (req, res) => {
   if (req.user) {
-    // console.log(req.session);
-    // console.log(req.session.userName);
     res.render('./posts/index', {
       title: req.user.userName,
       user: req.user,

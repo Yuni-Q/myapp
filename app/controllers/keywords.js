@@ -27,7 +27,6 @@ router.post('/', async (req, res) => {
 
 router.get('/:keywords', async (req, res, next) => {
   const { keywords } = req.params;
-  console.log(keywords);
   try {
     const result = await query.keywords.aggregate(keywords);
     res.json(result);
