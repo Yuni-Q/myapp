@@ -5,6 +5,7 @@ const { Schema } = mongoose;
 const Post = new Schema({
   date: { type: Date, default: Date.now },
   todo: String,
+  userId: String,
 });
 
 // create new User document

@@ -1,6 +1,5 @@
 const express = require('express');
 const passport = require('passport');
-const User = require('../mongoMedel/user');
 const {
   isLoggedIn,
   isNotLoggedIn,
@@ -10,16 +9,18 @@ const router = express.Router();
 
 /* GET users listing. */
 router.get('/', isNotLoggedIn, (req, res) => {
-  if (req.session.userName) {
+  if (req.user) {
     // console.log(req.session);
     // console.log(req.session.userName);
-    res.render('index', {
-      title: req.session.userName,
+    res.render('./posts/index', {
+      title: req.user.userName,
+      user: req.user,
     });
   } else {
-    res.render('login', {
-      title: 'login',
+    res.render('./users/index', {
+      title: 'users',
       messages: '로그인해 주세요 !!',
+      user: null,
     });
   }
 });
@@ -31,16 +32,17 @@ router.post('/', isNotLoggedIn, (req, res, next) => {
     }
     if (!user) {
       req.flash('loginError', info.message);
-      return res.render('login', {
-        title: 'login',
-        messages: '로그인해 주세요 !!',
+      res.render('./users/index', {
+        title: 'users',
+        messages: '올바르지 않습니다. !!',
+        user: null,
       });
     }
     return req.login(user, (loginError) => {
       if (loginError) {
         return next(loginError);
       }
-      return res.redirect('/users/page');
+      return res.json(user);
       // return res.render('page', {
       //   title: req.session.userName,
       // });
@@ -48,18 +50,9 @@ router.post('/', isNotLoggedIn, (req, res, next) => {
   })(req, res, next); // 미들웨어 내의 미들웨어에는 (req, res, next)를 붙입니다.
 });
 
-router.get('/logout', isLoggedIn, async (req, res) => {
-  await req.logout();
-  // await req.session.destroy();
-  res.redirect('/users');
-});
-
 router.delete('/', isLoggedIn, async (req, res) => {
-  const { _id } = req.user;
-  await User.deleteOne({ _id });
-  const result = await req.session.destroy(() => {
-    console.log('logout');
-  });
+  const result = await req.logout();
+  await req.session.destroy();
   res.json(result);
 });
 

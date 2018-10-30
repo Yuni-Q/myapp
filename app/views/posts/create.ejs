@@ -1,0 +1,40 @@
+<%- include('../layouts/header'); -%>
+    <p>Welcome to
+        <%= title %>
+    </p>
+    <div>
+        <div>
+            <label for="date"></label>
+            <input type="date" name="date" placeholder="date" id="date">
+            <br>
+            <label for="todo"></label>
+            <input type="text" name="todo" placeholder="todo" id="todo">
+            <br>
+            <br>
+            <button onclick="createPost()">글 작성</button>
+            <input type="submit" value="글 작성 !!">
+        </div>
+
+    </div>
+    <a href="/user/page/post"></a>
+    <script type="text/javascript" charset="utf-8">
+        function createPost() {
+            $.ajax({
+                url: "/posts",
+                type: 'post',
+                dataType: 'json',
+                data: {
+                    date: $('#date').val(),
+                    todo: $('#todo').val(),
+                },
+                async: false,
+                success: function (retdata) {
+                    console.log(retdata);
+                    window.location.href = '/posts';
+                }
+            });
+        }
+    </script>
+    </body>
+
+    </html>

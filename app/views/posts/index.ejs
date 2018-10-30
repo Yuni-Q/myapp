@@ -1,0 +1,62 @@
+<%- include('../layouts/header'); -%>
+
+    <p>Welcome to
+        <%= title %>
+    </p>
+    <div>
+        <table border="1">
+            <tr>
+                <th>id</th>
+                <th>todo</th>
+                <th>date</th>
+                <th>수정</th>
+                <th>삭제</th>
+            </tr>
+            <% for(let i = 0; i < posts.length ; i ++) { %>
+                <tr>
+                    <td>
+                        <%= i + 1 %>
+                    </td>
+                    <td>
+                        <%= posts[i].todo %>
+                    </td>
+                    <td>
+                        <%= posts[i].date %>
+                    </td>
+                    <% if (user._id == posts[i].userId) { %>
+                        <td>
+                            <a href="/posts/edit?_id=<%= posts[i]._id %>">수정</a>
+                        </td>
+                        <td>
+                            <button onclick="deletePost('<%= posts[i]._id %>')">삭제</button>
+                        </td>
+                        <% } %>
+                </tr>
+                <% }; %>
+        </table>
+
+
+    </div>
+    <a href="/posts/create">글 작성</a>
+    <script type="text/javascript" charset="utf-8">
+        function deletePost(_id) {
+            console.log(_id);
+            $.ajax({
+                url: "/posts",
+                type: 'delete',
+                dataType: 'json',
+                data: {
+                    _id: _id,
+                },
+                success: function (retdata) {
+                    console.log(retdata);
+                    console.log(retdata);
+                    console.log(retdata);
+                    window.location.href = '/posts';
+                }
+            });
+        };
+    </script>
+    </body>
+
+    </html>

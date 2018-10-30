@@ -1,0 +1,37 @@
+<%- include('../layouts/header'); -%>
+  <p>Welcome to
+    <%= title %>
+  </p>
+  <div class="flash">
+    <%= messages %>
+  </div>
+  <div>
+    <label for="userName"></label>
+    <input type="text" name="userName" placeholder="userName" id="userName">
+    <label for="password"></label>
+    <input type="password" name="password" placeholder="password" id="password">
+    <button onclick="createUser()">회원가입</button>
+  </div>
+  <br>
+  <a href="/users">로그인</a>
+  <script type="text/javascript" charset="utf-8">
+    function createUser() {
+      $.ajax({
+        url: "/members",
+        type: 'post',
+        dataType: 'json',
+        data: {
+          userName: $('#userName').val(),
+          password: $('#password').val(),
+        },
+        async: false,
+        success: function (retdata) {
+          console.log(retdata);
+          window.location.href = '/users';
+        }
+      });
+    }
+  </script>
+  </body>
+
+  </html>

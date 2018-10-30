@@ -1,0 +1,46 @@
+<%- include('../layouts/header'); -%>
+  <p>
+    Welcome to
+    <%= title %>
+  </p>
+  <p>
+    <% messages %>
+  </p>
+  <div>
+    <label for="userName"></label>
+    <input type="text" name="userName" placeholder="userName" id="userName">
+    <br>
+    <label for="user_password"></label>
+    <input type="password" name="password" placeholder="password" id="password">
+    <br>
+    <br>
+
+    <button onclick="loginUser()">로그인</button>
+  </div>
+  <br>
+  <a href="/members">회원가입을 해보자</a>
+  <script type="text/javascript" charset="utf-8">
+    function loginUser() {
+      $.ajax({
+        url: "/users",
+        type: 'post',
+        dataType: 'json',
+        data: {
+          userName: $('#userName').val(),
+          password: $('#password').val(),
+        },
+        async: false,
+        success: function (retdata) {
+          console.log('bbbbbbbb');
+          console.log('bbbbbbbb');
+          console.log('bbbbbbbb');
+          console.log('bbbbbbbb');
+
+          window.location.href = '/posts';
+        }
+      });
+    }
+  </script>
+  </body>
+
+  </html>

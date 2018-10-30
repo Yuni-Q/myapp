@@ -7,7 +7,7 @@ const router = express.Router();
 /* GET home page. */
 router.get('/', (req, res) => {
   res.cookie('name', 'Yun');
-  res.render('index', { title: '로그인하세요' });
+  res.render('index', { title: '안녕하세요' });
 
   // 쿠키 세팅
   // res.cookie(key,value,{options});
