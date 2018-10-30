@@ -10,16 +10,15 @@
             <label for="todo"></label>
             <input type="text" name="todo" placeholder="todo" id="todo" value="<%= posts.todo %>">
             <br>
-            <input type="hidden" name="_id" id="_id" value="<%= posts._id %>">
-            <button onclick="updatePost()">글 작성</button>
+            <button onclick="updatePost('<%= posts._id %>')">글 작성</button>
         </div>
 
     </div>
     <a href="/user/page/post"></a>
     <script type="text/javascript" charset="utf-8">
-        function updatePost() {
+        function updatePost(_id) {
             $.ajax({
-                url: "/posts",
+                url: "/posts/" + _id,
                 type: 'put',
                 dataType: 'json',
                 data: {

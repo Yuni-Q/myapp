@@ -26,7 +26,7 @@
                         </td>
                         <% if (user._id == posts[i].userId) { %>
                             <td>
-                                <a href="/posts/edit?_id=<%= posts[i]._id %>">수정</a>
+                                <a href="/posts/<%= posts[i]._id %>/edit">수정</a>
                             </td>
                             <td>
                                 <button onclick="deletePost('<%= posts[i]._id %>')">삭제</button>
@@ -43,12 +43,8 @@
     <script type="text/javascript" charset="utf-8">
         function deletePost(_id) {
             $.ajax({
-                url: "/posts",
+                url: "/posts/" + _id,
                 type: 'delete',
-                dataType: 'json',
-                data: {
-                    _id: _id,
-                },
                 success: function (retdata) {
                     console.log(retdata);
                     window.location.href = '/posts';
