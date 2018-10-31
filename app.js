@@ -5,7 +5,7 @@ const express = require('express');
 // const schedule = require('node-schedule');
 const createError = require('http-errors');
 const swaggerUi = require('swagger-ui-express');
-// const indexRouter = require('./routes/index');
+const indexRouter = require('./routes/index');
 // const usersRouter = require('./routes/users');
 const route = require('./config/routes');
 const swaggerDocument = require('./swagger.json');
@@ -20,11 +20,11 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
 
-// app.use('/', indexRouter);
+app.use('/', indexRouter);
 // app.use('/users', usersRouter);
 environment(app);
 route(app);
-app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use('/apiDocs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 
 // const rule = new schedule.RecurrenceRule();
