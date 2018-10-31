@@ -1,20 +1,11 @@
-# myapp
+# MySmallProject
 
-## MYSQL
-## ESLint
-## 구조화
-## Logger
-## Swagger
-## MongoDB
-## passport
-## slackbot
+### 0. 구성
 
-### sequelize-cli 사용
-```bash
-npm i sequelize -g
-npm i sequelize-cli -g
-npm i mysql2 -g
-sequelize db:create
-sequelize db:migrate
-sequelize db:create:undo
-```
+- server : Node.js(ejs)
+- Database : mongoDB
+- hosting : Heroku
+
+### 1. 주소
+[MySmallProject](https://mighty-gorge-25136.herokuapp.com/)
+[APIDocs](https://mighty-gorge-25136.herokuapp.com/apiDocs)
