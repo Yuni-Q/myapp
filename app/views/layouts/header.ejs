@@ -1,10 +1,14 @@
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>
-    <%= title %>
+    Yuni-Q
   </title>
+  <link rel="stylesheet" href="/stylesheets/style.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
   <script type="text/javascript" charset="utf-8">
@@ -12,10 +16,6 @@
       $.ajax({
         url: "/members",
         type: 'delete',
-        // dataType: 'json',
-        // data: {
-        //     id: $('#id').val(),
-        // },
         async: false,
         success: function (retdata) {
           window.location.href = '/users';
@@ -26,10 +26,6 @@
       $.ajax({
         url: "/users",
         type: 'delete',
-        // dataType: 'json',
-        // data: {
-        //     id: $('#id').val(),
-        // },
         async: false,
         success: function (retdata) {
           window.location.href = '/users';
@@ -40,17 +36,29 @@
 </head>
 
 <body>
-  <h1>
-    <%= title %>
-  </h1>
-  <div>
-    <% if (user) { %>
-      <button onclick="logoutUser()">logout</button>
-      <div>
-        <button onclick="deleteUser()">회원탈퇴</button>
-      </div>
-      <% } else { %>
-        <a href="/users/">login</a>
-        <% } %>
+  <div class="container">
 
-  </div>
+    <header>
+
+      <nav class="main-nav">
+        <h1>Yuni-Q</h1>
+        <ul>
+          <% if (user) { %>
+            <li>
+              <button onclick="logoutUser()">logout</button>
+            </li>
+            <li>
+              <button onclick="deleteUser()">회원탈퇴</button>
+            </li>
+            <% } else { %>
+              <li>
+                <a href="/users/">sign_in</a>
+                &nbsp;&nbsp;
+                <a href="/members">sign_up</a>
+              </li>
+              <% } %>
+        </ul>
+      </nav>
+      <hr>
+      <main>
+    </header>

@@ -1,16 +1,15 @@
 
-const path = require('path');
-const cookieParser = require('cookie-parser');
-const session = require('express-session');
-const bodyParser = require('body-parser');
-const compression = require('compression');
-const bearerToken = require('express-bearer-token');
 const cors = require('cors');
-const mongoose = require('mongoose');
+const path = require('path');
 const passport = require('passport'); // passport module add
+const mongoose = require('mongoose');
 const flash = require('connect-flash');
+const bodyParser = require('body-parser');
+const session = require('express-session');
+const compression = require('compression');
+const cookieParser = require('cookie-parser');
+const bearerToken = require('express-bearer-token');
 const passportConfig = require('../app/middlewares/passport');
-
 
 global.config = require('config');
 

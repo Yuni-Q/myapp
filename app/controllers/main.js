@@ -6,8 +6,9 @@ const router = express.Router();
 
 /* GET home page. */
 router.get('/', (req, res) => {
+  const url = `${req.protocol}://${req.host}:${process.env.PORT || '3000'}`;
   res.cookie('name', 'Yun');
-  res.render('index', { title: '안녕하세요' });
+  res.render('index', { title: '안녕하세요', url });
 
   // 쿠키 세팅
   // res.cookie(key,value,{options});

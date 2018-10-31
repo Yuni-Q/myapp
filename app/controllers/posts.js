@@ -9,12 +9,14 @@ const router = express.Router();
 
 
 router.get('/', isLoggedIn, async (req, res) => {
+  const url = `${req.protocol}://${req.host}:${process.env.PORT || '3000'}`;
   const posts = await Post.find({}).sort({ date: 1 });
   console.log(posts);
   res.render('./posts/index', {
     title: req.user.userName,
     posts,
     user: req.user,
+    url,
   });
 });
 
@@ -25,15 +27,7 @@ router.post('/', isLoggedIn, async (req, res) => {
   res.json(result);
 });
 
-router.get('/:_id', isLoggedIn, async (req, res) => {
-  const { _id } = req.params;
-  const posts = await Post.findOne({ _id });
-  res.render('./posts/show', {
-    title: 'Show',
-    posts,
-    user: req.user,
-  });
-});
+
 
 router.get('/create', isLoggedIn, async (req, res) => {
   res.render('./posts/create', {
@@ -54,6 +48,16 @@ router.get('/:_id/edit', isLoggedIn, async (req, res) => {
   });
 });
 
+router.get('/:_id', isLoggedIn, async (req, res) => {
+  const { _id } = req.params;
+  const posts = await Post.findOne({ _id });
+  res.render('./posts/show', {
+    title: 'Show',
+    posts,
+    user: req.user,
+  });
+});
+
 router.put('/:_id', isLoggedIn, async (req, res) => {
   const { _id } = req.params;
   const { todo, date } = req.body;
@@ -63,6 +67,7 @@ router.put('/:_id', isLoggedIn, async (req, res) => {
   const result = posts.save();
   res.json(result);
 });
+
 
 router.delete('/:_id', isLoggedIn, async (req, res) => {
   const { _id } = req.params;

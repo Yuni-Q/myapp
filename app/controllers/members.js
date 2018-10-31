@@ -9,15 +9,18 @@ const router = express.Router();
 
 
 router.get('/', isNotLoggedIn, (req, res) => {
+  const url = `${req.protocol}://${req.host}:${process.env.PORT || '3000'}`;
   const { user } = req;
   res.render('./members/index', {
     title: 'members',
     messages: '회원가입해 주세요.',
     user,
+    url,
   });
 });
 
 router.post('/', isNotLoggedIn, async (req, res) => {
+  const url = `${req.protocol}://${req.host}:${process.env.PORT || '3000'}`;
   const { user } = req;
   const {
     userName,
@@ -30,6 +33,7 @@ router.post('/', isNotLoggedIn, async (req, res) => {
         title: 'members',
         messages: '이미 가입 된 유저 name 입니다.',
         user,
+        url,
       });
       return;
     }
@@ -42,6 +46,7 @@ router.post('/', isNotLoggedIn, async (req, res) => {
     res.render('error', {
       title: 'error',
       messages: '회원 가입 중 에러 발생 !!',
+      url,
     });
   }
 });

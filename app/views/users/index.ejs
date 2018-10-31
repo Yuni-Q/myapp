@@ -1,25 +1,28 @@
 <%- include('../layouts/header'); -%>
-  <p>
-    Welcome to
-    <%= title %>
-  </p>
-  <p>
-    <% messages %>
-  </p>
-  <div>
+  <section>
+    <h2>Welcome to
+      <%= title %>
+    </h2>
     <form action="/users" method="post">
-      <label for="userName"></label>
-      <input type="text" name="userName" placeholder="userName" id="userName">
-      <br>
-      <label for="user_password"></label>
-      <input type="password" name="password" placeholder="password" id="password">
-      <br>
-      <br>
-      <input type="submit" value="로그인">
+      <table class="login">
+        <tr>
+          <td>
+            <label for="userName">userName</label>
+          </td>
+          <td>
+            <input type="text" name="userName" placeholder="userName" id="userName">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="user_password">password</label>
+          </td>
+          <td>
+            <input type="password" name="password" placeholder="password" id="password">
+          </td>
+        </tr>
+      </table>
+      <input class="submitButton" type="submit" value="로그인">
     </form>
-  </div>
-  <br>
-  <a href="/members">회원가입을 해보자</a>
-  </body>
-
-  </html>
+  </section>
+  <%- include('../layouts/footer'); -%>
