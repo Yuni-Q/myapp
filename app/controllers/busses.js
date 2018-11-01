@@ -2,6 +2,7 @@
 const express = require('express');
 const request = require('request');
 const { parseString } = require('xml2js');
+const { forEach } = require('async-foreach');
 const Bus = require('../mongoMedel/bus');
 const query = require('../mongoMedel/query');
 const { isLoggedIn } = require('../middlewares/passport/checkLogin');
@@ -36,7 +37,7 @@ router.get('/busstop', isLoggedIn, async (req, res) => {
   const busses = await Bus.find({ userId: _id }).sort({ date: 1 });
   console.log(busses);
   const time = [];
-  await busses.forEach((async (bus) => {
+  await forEach(busses, (async (bus) => {
     let busStopName = bus.name;
     busStopName = await encodeURI(busStopName);
     time[busStopName] = [];
@@ -48,7 +49,8 @@ router.get('/busstop', isLoggedIn, async (req, res) => {
         const busTime = `http://ws.bus.go.kr/api/rest/stationinfo/getStationByUid?ServiceKey=${config.busStopKey}&arsId=${busStopNumber}`;
         request(busTime, async (error2, response2, body2) => {
           parseString(body2, async (err2, result2) => {
-            (await result2.ServiceResult.msgBody[0].itemList).forEach((async (element) => {
+            const { itemList } = await result2.ServiceResult.msgBody[0];
+            await forEach(itemList, (async (element) => {
               await time[busStopName].push(`${element.rtNm}번 버스 도착 시간은 ${element.arrmsg1}입니다.`);
             }));
             console.log(time);
