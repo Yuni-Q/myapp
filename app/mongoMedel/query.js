@@ -69,7 +69,7 @@ exports.Post = {
     post.todo = body.todo;
     post.date = body.date;
     post.status = body.status;
-    post.body.priority = body.priority;
+    post.priority = body.priority;
     post.userId = userId;
     return post.save();
   },

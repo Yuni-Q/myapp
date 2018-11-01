@@ -33,7 +33,12 @@
                     <label for="status">status</label>
                 </td>
                 <td>
-                    <input type="checkbox" name="status" placeholder="status" id="status" value="<%= posts.status %>">
+                    <% if (posts.status == true) { %>
+                        <input type="checkbox" name="status" placeholder="status" id="status" value="true" checked>
+                        <% } else { %>
+                            <input type="checkbox" name="status" placeholder="status" id="status" value="true">
+                            <% } %>
+
                 </td>
             </tr>
         </table>
@@ -43,6 +48,15 @@
     <a href="/user/page/post"></a>
     <script type="text/javascript" charset="utf-8">
         function updatePost(_id) {
+            var status = false;
+            console.log($('#status').is(":checked"));
+            console.log($('#status').is(":checked"));
+            console.log($('#status').is(":checked"));
+            if ($('#status').is(":checked") == true) {
+                status = true;
+            }
+            console.log(status);
+            setTimeout(function () { console.log("Hello"); }, 3000);
             $.ajax({
                 url: "/posts/" + _id,
                 type: 'put',
@@ -51,6 +65,8 @@
                     _id: $('#_id').val(),
                     date: $('#date').val(),
                     todo: $('#todo').val(),
+                    priority: $('#priority').val(),
+                    status: status,
 
                 },
                 async: false,

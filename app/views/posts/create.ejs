@@ -33,7 +33,7 @@
                     <label for="status">status</label>
                 </td>
                 <td>
-                    <input type="checkbox" name="status" placeholder="status" id="status">
+                    <input type="checkbox" name="status" placeholder="status" id="status" value="true">
                 </td>
             </tr>
         </table>
@@ -42,6 +42,10 @@
     <a href="/user/page/post"></a>
     <script type="text/javascript" charset="utf-8">
         function createPost() {
+            var status = false;
+            if ($('#status').val() == 'true') {
+                status = true;
+            }
             $.ajax({
                 url: "/posts",
                 type: 'post',
@@ -49,6 +53,8 @@
                 data: {
                     date: $('#date').val(),
                     todo: $('#todo').val(),
+                    priority: $('#priority').val(),
+                    status: status,
                 },
                 async: false,
                 success: function (retdata) {
