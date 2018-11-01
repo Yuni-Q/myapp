@@ -37,29 +37,36 @@ router.get('/busstop', isLoggedIn, async (req, res) => {
   const busses = await Bus.find({ userId: _id }).sort({ date: 1 });
   console.log(busses);
   const time = [];
-  await forEach(busses, (async (bus) => {
+  // await forEach(busses, (async (bus) => {
+  await Promise.all(busses.map(async (bus) => {
     let busStopName = bus.name;
     busStopName = await encodeURI(busStopName);
     time[busStopName] = [];
-    console.log(busStopName);
     const busStopNumberUri = `http://ws.bus.go.kr/api/rest/stationinfo/getStationByName?ServiceKey=${config.busStopKey}&stSrch=${busStopName}`;
-    request(busStopNumberUri, async (error, response, body) => {
+    let r = request(busStopNumberUri, async (error, response, body) => {
       parseString(body, async (err, result) => {
         const busStopNumber = await result.ServiceResult.msgBody[0].itemList[0].arsId[0];
         const busTime = `http://ws.bus.go.kr/api/rest/stationinfo/getStationByUid?ServiceKey=${config.busStopKey}&arsId=${busStopNumber}`;
-        request(busTime, async (error2, response2, body2) => {
+        r = request(busTime, async (error2, response2, body2) => {
           parseString(body2, async (err2, result2) => {
             const { itemList } = await result2.ServiceResult.msgBody[0];
-            await forEach(itemList, (async (element) => {
+            // await forEach(itemList, (async (element) => {
+            await Promise.all(itemList.map(async (element) => {
               await time[busStopName].push(`${element.rtNm}번 버스 도착 시간은 ${element.arrmsg1}입니다.`);
             }));
-            console.log(time);
+            console.log('1', time);
           });
+          console.log('2', time);
         });
+        console.log('3', time);
       });
+      console.log('4', time);
     });
+    console.log('5', time);
   }));
-  res.json(time);
+  // }
+  console.log('6', time);
+  res.json({ time });
 });
 
 router.get('/:_id/edit', isLoggedIn, async (req, res) => {
