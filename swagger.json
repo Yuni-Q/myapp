@@ -11,10 +11,12 @@
   },
   "host": "mighty-gorge-25136.herokuapp.com",
   "basePath": "/",
-  "tags": [{
-    "name": "Users",
-    "description": "API for users in the system"
-  }],
+  "tags": [
+    {
+      "name": "Users",
+      "description": "API for users in the system"
+    }
+  ],
   "schemes": [
     "https"
   ],
@@ -51,24 +53,26 @@
         "produces": [
           "application/json"
         ],
-        "parameters": [{
-          "name": "body",
-          "in": "body",
-          "required": true,
-          "schema": {
-            "type": "object",
-            "properties": {
-              "userName": {
-                "type": "string",
-                "example": "aa"
-              },
-              "password": {
-                "type": "string",
-                "example": "aa"
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "userName": {
+                  "type": "string",
+                  "example": "aa"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "aa"
+                }
               }
             }
           }
-        }],
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -113,24 +117,26 @@
         "tags": [
           "members"
         ],
-        "parameters": [{
-          "name": "body",
-          "in": "body",
-          "required": true,
-          "schema": {
-            "type": "object",
-            "properties": {
-              "userName": {
-                "type": "string",
-                "example": "aa"
-              },
-              "password": {
-                "type": "string",
-                "example": "aa"
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "userName": {
+                  "type": "string",
+                  "example": "aa"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "aa"
+                }
               }
             }
           }
-        }],
+        ],
         "responses": {
           "200": {
             "description": "User is updated",
@@ -175,24 +181,34 @@
         "tags": [
           "posts"
         ],
-        "parameters": [{
-          "name": "body",
-          "in": "body",
-          "required": true,
-          "schema": {
-            "type": "object",
-            "properties": {
-              "todo": {
-                "type": "string",
-                "example": "aa"
-              },
-              "date": {
-                "type": "date",
-                "example": "2018-10-30"
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "todo": {
+                  "type": "string",
+                  "example": "aa"
+                },
+                "date": {
+                  "type": "date",
+                  "example": "2018-10-30"
+                },
+                "priority": {
+                  "type": "integer",
+                  "example": 1
+                },
+                "status": {
+                  "type": "boolean",
+                  "example": false
+                }
               }
             }
           }
-        }],
+        ],
         "responses": {
           "200": {
             "description": "User is updated",
@@ -220,12 +236,14 @@
         "tags": [
           "posts"
         ],
-        "parameters": [{
-          "name": "_id",
-          "in": "path",
-          "type": "string",
-          "default": "aaaaa"
-        }],
+        "parameters": [
+          {
+            "name": "_id",
+            "in": "path",
+            "type": "string",
+            "default": "aaaaa"
+          }
+        ],
         "responses": {
           "200": {
             "description": "User is deleted",
@@ -238,16 +256,18 @@
     },
     "/posts/{_id}": {
       "get": {
-        "summary": "게시글 수정",
+        "summary": "게시글 보기",
         "tags": [
           "posts"
         ],
-        "parameters": [{
-          "name": "_id",
-          "in": "path",
-          "type": "string",
-          "default": "aaaaa"
-        }],
+        "parameters": [
+          {
+            "name": "_id",
+            "in": "path",
+            "type": "string",
+            "default": "aaaaa"
+          }
+        ],
         "responses": {
           "200": {
             "description": "User is deleted",
@@ -262,7 +282,8 @@
         "tags": [
           "posts"
         ],
-        "parameters": [{
+        "parameters": [
+          {
             "name": "_id",
             "in": "path",
             "type": "string",
@@ -282,6 +303,14 @@
                 "date": {
                   "type": "date",
                   "example": "2018-10-30"
+                },
+                "priority": {
+                  "type": "integer",
+                  "example": 1
+                },
+                "status": {
+                  "type": "boolean",
+                  "example": false
                 }
               }
             }
@@ -301,12 +330,14 @@
         "tags": [
           "posts"
         ],
-        "parameters": [{
-          "name": "_id",
-          "in": "path",
-          "type": "string",
-          "default": "aaaaa"
-        }],
+        "parameters": [
+          {
+            "name": "_id",
+            "in": "path",
+            "type": "string",
+            "default": "aaaaa"
+          }
+        ],
         "responses": {
           "200": {}
         }
@@ -340,24 +371,26 @@
         "tags": [
           "keywords"
         ],
-        "parameters": [{
-          "name": "body",
-          "in": "body",
-          "required": true,
-          "schema": {
-            "type": "object",
-            "properties": {
-              "keywords": {
-                "type": "array",
-                "example": "aa"
-              },
-              "date": {
-                "type": "date",
-                "example": "2018-10-30"
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "keywords": {
+                  "type": "array",
+                  "example": "aa"
+                },
+                "date": {
+                  "type": "date",
+                  "example": "2018-10-30"
+                }
               }
             }
           }
-        }],
+        ],
         "responses": {
           "200": {}
         }
@@ -369,19 +402,20 @@
         "tags": [
           "keywords"
         ],
-        "parameters": [{
-          "name": "keywords",
-          "in": "path",
-          "type": "string",
-          "default": "야식"
-        }],
+        "parameters": [
+          {
+            "name": "keywords",
+            "in": "path",
+            "type": "string",
+            "default": "야식"
+          }
+        ],
         "responses": {
           "200": {}
         }
       }
     }
   },
-
   "definitions": {
     "User": {
       "required": [
@@ -416,8 +450,16 @@
           "type": "string",
           "uniqueItems": true
         },
+        "priority": {
+          "type": "integer",
+          "uniqueItems": true
+        },
         "date": {
           "type": "date",
+          "uniqueItems": true
+        },
+        "status": {
+          "type": "boolean",
           "uniqueItems": true
         },
         "userId": {
