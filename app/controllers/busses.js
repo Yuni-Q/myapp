@@ -69,7 +69,7 @@ router.delete('/:_id', isLoggedIn, async (req, res) => {
   res.json(result);
 });
 
-router.get('/busstop', async (req, res) => {
+router.get('/busstop', isLoggedIn, async (req, res) => {
   const { _id } = req.params;
   const busses = await Bus.find({ userId: _id }).sort({ date: 1 });
   const time = [];
