@@ -1,0 +1,54 @@
+<%- include('../layouts/header'); -%>
+    <section>
+        <h2>Welcome to
+            <%= title %>
+        </h2>
+        <div>
+            <table class="posts">
+                <tr>
+                    <th>id</th>
+                    <th>name</th>
+                    <th>show</th>
+                    <th>edit</th>
+                    <th>delete</th>
+                </tr>
+                <% if (busses) { %>
+                    <% for(var i = 0; i < busses.length ; i ++) { %>
+                        <tr>
+                            <td>
+                                <%= i + 1 %>
+                            </td>
+                            <td>
+                                <%= busses[i].name %>
+                            </td>
+                            <td>
+                                <a href="/busses/<%= busses[i]._id %>">Show</a>
+                            </td>
+                            <% if (user._id == busses[i].userId) { %>
+                                <td>
+                                    <a href="/busses/<%= busses[i]._id %>/edit">Edit</a>
+                                </td>
+                                <td>
+                                    <button onclick="deletePost('<%= busses[i]._id %>')">Delete</button>
+                                </td>
+                                <% } %>
+                        </tr>
+                        <% }; %>
+                            <% }; %>
+            </table>
+        </div>
+        <a href="/busses/create" class="submitA">글 작성</a>
+    </section>
+    <script type="text/javascript" charset="utf-8">
+        function deletePost(_id) {
+            $.ajax({
+                url: "/busses/" + _id,
+                type: 'delete',
+                success: function (retdata) {
+                    console.log(retdata);
+                    window.location.href = '/busses';
+                }
+            });
+        };
+    </script>
+    <%- include('../layouts/footer'); -%>

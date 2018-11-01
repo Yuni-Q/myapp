@@ -1,3 +1,5 @@
+
+const Bus = require('./bus');
 const User = require('./user');
 const Post = require('./post');
 const Keyword = require('./keyword');
@@ -82,5 +84,14 @@ exports.Post = {
     return {
       message: 'registered successfully',
     };
+  },
+};
+
+exports.Bus = {
+  create(body, userId) {
+    const bus = new Bus();
+    bus.name = body.name;
+    bus.userId = userId;
+    return bus.save();
   },
 };

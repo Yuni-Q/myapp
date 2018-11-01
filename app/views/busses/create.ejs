@@ -1,0 +1,35 @@
+<%- include('../layouts/header'); -%>
+    <h2>Welcome to
+        <%= title %>
+    </h2>
+    <section>
+        <table class="post">
+            <tr>
+                <td>
+                    <label for="name">name</label>
+                </td>
+                <td>
+                    <input type="text" name="name" placeholder="name" id="name">
+                </td>
+            </tr>
+        </table>
+        <button onclick="createPost()" class="submitButton">글 작성</button>
+    </section>
+    <script type="text/javascript" charset="utf-8">
+        function createPost() {
+            $.ajax({
+                url: "/busses",
+                type: 'post',
+                dataType: 'json',
+                data: {
+                    name: $('#name').val(),
+                },
+                async: false,
+                success: function (retdata) {
+                    console.log(retdata);
+                    window.location.href = '/posts';
+                }
+            });
+        }
+    </script>
+    <%- include('../layouts/footer'); -%>

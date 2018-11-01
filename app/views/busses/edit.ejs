@@ -1,0 +1,36 @@
+<%- include('../layouts/header'); -%>
+    <h2>Welcome to
+        <%= title %>
+    </h2>
+    <section>
+        <table class="post">
+            <tr>
+                <td>
+                    <label for="name">name</label>
+                </td>
+                <td>
+                    <input type="text" name="name" placeholder="name" id="name" value="<%= bus.name %>">>
+                </td>
+            </tr>
+        </table>
+        <button onclick="updatePost('<%= bus._id %>')" class="submitButton">글 수정</button>
+    </section>
+
+    <script type="text/javascript" charset="utf-8">
+        function updatePost(_id) {
+            $.ajax({
+                url: "/busses/" + _id,
+                type: 'put',
+                dataType: 'json',
+                data: {
+                    name: $('#name').val(),
+                },
+                async: false,
+                success: function (retdata) {
+                    console.log(retdata);
+                    window.location.href = '/posts';
+                }
+            });
+        }
+    </script>
+    <%- include('../layouts/footer'); -%>

@@ -1,0 +1,46 @@
+<%- include('../layouts/header'); -%>
+    <section>
+        <h2>Welcome to
+            <%= title %>
+        </h2>
+        <div>
+            <table class="posts">
+                <tr>
+                    <th>name</th>
+                    <th>수정</th>
+                    <th>삭제</th>
+                </tr>
+
+                <tr>
+                    <td>
+                        <%= bus.name %>
+                    </td>
+                    <td>
+                        <%= bus.date %>
+                    </td>
+                    <% if (user._id == bus.userId) { %>
+                        <td>
+                            <a href="/busses/<%= bus._id %>/edit">수정</a>
+                        </td>
+                        <td>
+                            <button onclick="deletePost('<%= bus._id %>')">삭제</button>
+                        </td>
+                        <% } %>
+                </tr>
+            </table>
+        </div>
+        <a href="/busses/create" class="submitA">글 작성</a>
+    </section>
+    <script type="text/javascript" charset="utf-8">
+        function deletePost(_id) {
+            $.ajax({
+                url: "/busses/" + _id,
+                type: 'delete',
+                success: function (retdata) {
+                    console.log(retdata);
+                    window.location.href = '/busses';
+                }
+            });
+        };
+    </script>
+    <%- include('../layouts/footer'); -%>

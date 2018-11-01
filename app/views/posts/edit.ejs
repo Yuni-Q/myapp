@@ -17,7 +17,7 @@
                     <label for="todo">ToDo</label>
                 </td>
                 <td>
-                    <input type="text" name="todo" placeholder="todo" id="todo" value="<%= posts.todo %>">
+                    <input type="text" name="todo" placeholder="todo" id="todo" value="<%= post.todo %>">
                 </td>
             </tr>
             <tr>
@@ -25,7 +25,7 @@
                     <label for="priority">priority</label>
                 </td>
                 <td>
-                    <input type="number" name="priority" placeholder="priority" id="priority" value="<%= posts.priority %>">
+                    <input type="number" name="priority" placeholder="priority" id="priority" value="<%= post.priority %>">
                 </td>
             </tr>
             <tr>
@@ -33,7 +33,7 @@
                     <label for="status">status</label>
                 </td>
                 <td>
-                    <% if (posts.status == true) { %>
+                    <% if (post.status == true) { %>
                         <input type="checkbox" name="status" placeholder="status" id="status" value="true" checked>
                         <% } else { %>
                             <input type="checkbox" name="status" placeholder="status" id="status" value="true">
@@ -42,21 +42,15 @@
                 </td>
             </tr>
         </table>
-        <button onclick="updatePost('<%= posts._id %>')" class="submitButton">글 작성</button>
+        <button onclick="updatePost('<%= post._id %>')" class="submitButton">글 수정</button>
     </section>
 
-    <a href="/user/page/post"></a>
     <script type="text/javascript" charset="utf-8">
         function updatePost(_id) {
             var status = false;
-            console.log($('#status').is(":checked"));
-            console.log($('#status').is(":checked"));
-            console.log($('#status').is(":checked"));
             if ($('#status').is(":checked") == true) {
                 status = true;
             }
-            console.log(status);
-            setTimeout(function () { console.log("Hello"); }, 3000);
             $.ajax({
                 url: "/posts/" + _id,
                 type: 'put',
@@ -67,7 +61,6 @@
                     todo: $('#todo').val(),
                     priority: $('#priority').val(),
                     status: status,
-
                 },
                 async: false,
                 success: function (retdata) {
