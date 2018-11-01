@@ -1,17 +1,24 @@
-
 const express = require('express');
-const request = require('request');
-const { parseString } = require('xml2js');
-const { forEach } = require('async-foreach');
+const request = require('sync-request');
+const {
+  parseString
+} = require('xml2js');
+const {
+  forEach
+} = require('async-foreach');
 const Bus = require('../mongoMedel/bus');
 const query = require('../mongoMedel/query');
-const { isLoggedIn } = require('../middlewares/passport/checkLogin');
+const {
+  isLoggedIn
+} = require('../middlewares/passport/checkLogin');
 
 const router = express.Router();
 
 
 router.get('/', isLoggedIn, async (req, res) => {
-  const busses = await Bus.find({}).sort({ date: 1 });
+  const busses = await Bus.find({}).sort({
+    date: 1
+  });
   res.render('./busses/index', {
     title: req.user.userName,
     busses,
@@ -20,7 +27,9 @@ router.get('/', isLoggedIn, async (req, res) => {
 });
 
 router.post('/', isLoggedIn, async (req, res) => {
-  const { _id } = req.user;
+  const {
+    _id
+  } = req.user;
   const result = await query.Bus.create(req.body, _id);
   res.json(result);
 });
@@ -33,45 +42,59 @@ router.get('/create', isLoggedIn, async (req, res) => {
 });
 
 router.get('/busstop', isLoggedIn, async (req, res) => {
-  const { _id } = req.user;
-  const busses = await Bus.find({ userId: _id }).sort({ date: 1 });
-  console.log(busses);
-  const time = [];
-  // await forEach(busses, (async (bus) => {
-  await Promise.all(busses.map(async (bus) => {
+  const {
+    _id,
+  } = req.user;
+  const busses = await Bus.find({
+    userId: _id,
+  }).sort({
+    date: 1,
+  });
+  let time = [];
+  busses.forEach((bus) => {
     let busStopName = bus.name;
-    busStopName = await encodeURI(busStopName);
+    busStopName = encodeURI(busStopName);
     time[busStopName] = [];
     const busStopNumberUri = `http://ws.bus.go.kr/api/rest/stationinfo/getStationByName?ServiceKey=${config.busStopKey}&stSrch=${busStopName}`;
-    let r = request(busStopNumberUri, async (error, response, body) => {
-      parseString(body, async (err, result) => {
-        const busStopNumber = await result.ServiceResult.msgBody[0].itemList[0].arsId[0];
-        const busTime = `http://ws.bus.go.kr/api/rest/stationinfo/getStationByUid?ServiceKey=${config.busStopKey}&arsId=${busStopNumber}`;
-        r = request(busTime, async (error2, response2, body2) => {
-          parseString(body2, async (err2, result2) => {
-            const { itemList } = await result2.ServiceResult.msgBody[0];
-            // await forEach(itemList, (async (element) => {
-            await Promise.all(itemList.map(async (element) => {
-              await time[busStopName].push(`${element.rtNm}번 버스 도착 시간은 ${element.arrmsg1}입니다.`);
-            }));
-            console.log('1', time);
-          });
-          console.log('2', time);
+    console.log('busStopNumberUri', busStopNumberUri);
+    const { body } = request('GET', busStopNumberUri);
+    console.log(body);
+    console.log('10');
+    parseString(body, (err, result) => {
+      console.log('11');
+      console.log(result);
+      const busStopNumber = result.ServiceResult.msgBody[0].itemList[0].arsId[0];
+      const busTime = `http://ws.bus.go.kr/api/rest/stationinfo/getStationByUid?ServiceKey=${config.busStopKey}&arsId=${busStopNumber}`;
+      console.log('busTime', busTime);
+      const body2 = request('GET', busTime).body;
+      console.log('12');
+      parseString(body2, (err2, result2) => {
+        console.log('13');
+        const {
+          itemList,
+        } = result2.ServiceResult.msgBody[0];
+        itemList.forEach((element) => {
+          console.log('14', element.rtNm);
+          time[busStopName].push(`${element.rtNm}번 버스 도착 시간은 ${element.arrmsg1}입니다.`);
         });
-        console.log('3', time);
+        console.log('1', time);
       });
-      console.log('4', time);
+      console.log('2', time);
     });
-    console.log('5', time);
-  }));
-  // }
-  console.log('6', time);
-  res.json({ time });
+  });
+  console.log('3', time);
+  time = time;
+  console.log(time);
+  await res.send(time);
 });
 
 router.get('/:_id/edit', isLoggedIn, async (req, res) => {
-  const { _id } = req.params;
-  const bus = await Bus.findOne({ _id });
+  const {
+    _id
+  } = req.params;
+  const bus = await Bus.findOne({
+    _id
+  });
   res.render('./busses/edit', {
     title: '정류장 수정',
     bus,
@@ -80,8 +103,12 @@ router.get('/:_id/edit', isLoggedIn, async (req, res) => {
 });
 
 router.get('/:_id', isLoggedIn, async (req, res) => {
-  const { _id } = req.params;
-  const bus = await Bus.findOne({ _id });
+  const {
+    _id
+  } = req.params;
+  const bus = await Bus.findOne({
+    _id
+  });
   res.render('./busses/show', {
     title: 'Show',
     bus,
@@ -90,10 +117,16 @@ router.get('/:_id', isLoggedIn, async (req, res) => {
 });
 
 router.put('/:_id', isLoggedIn, async (req, res) => {
-  const { _id } = req.params;
+  const {
+    _id
+  } = req.params;
   const userId = req.user._id;
-  const { name } = req.body;
-  const bus = await Bus.findOne({ _id });
+  const {
+    name
+  } = req.body;
+  const bus = await Bus.findOne({
+    _id
+  });
   bus.name = name;
   bus.userId = userId;
   const result = bus.save();
@@ -102,8 +135,12 @@ router.put('/:_id', isLoggedIn, async (req, res) => {
 
 
 router.delete('/:_id', isLoggedIn, async (req, res) => {
-  const { _id } = req.params;
-  const result = await Bus.deleteOne({ _id });
+  const {
+    _id
+  } = req.params;
+  const result = await Bus.deleteOne({
+    _id
+  });
   res.json(result);
 });
 
