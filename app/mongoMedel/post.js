@@ -6,6 +6,8 @@ const Post = new Schema({
   date: { type: Date, default: Date.now },
   todo: String,
   userId: String,
+  status: Boolean,
+  priority: Number,
 });
 
 // create new User document

@@ -64,10 +64,12 @@ exports.User = {
 };
 
 exports.Post = {
-  create(todo, date, userId) {
+  create(body, userId) {
     const post = new Post();
-    post.todo = todo;
-    post.date = date;
+    post.todo = body.todo;
+    post.date = body.date;
+    post.status = body.status;
+    post.body.priority = body.priority;
     post.userId = userId;
     return post.save();
   },

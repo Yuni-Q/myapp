@@ -1,19 +1,30 @@
 <%- include('../layouts/header'); -%>
-  <p>Welcome to
+  <h2>Welcome to
     <%= title %>
-  </p>
+  </h2>
   <div class="flash">
     <%= messages %>
   </div>
-  <div>
-    <label for="userName"></label>
-    <input type="text" name="userName" placeholder="userName" id="userName">
-    <label for="password"></label>
-    <input type="password" name="password" placeholder="password" id="password">
-    <button onclick="createUser()">회원가입</button>
-  </div>
-  <br>
-  <a href="/users">로그인</a>
+  <table class="login">
+    <tr>
+      <td>
+        <label for="userName">userName</label>
+      </td>
+      <td>
+        <input type="text" name="userName" placeholder="userName" id="userName">
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <label for="password">password</label>
+      </td>
+      <td>
+        <input type="password" name="password" placeholder="password" id="password">
+      </td>
+    </tr>
+
+  </table>
+  <button onclick="createUser()" class="submitButton">회원가입</button>
   <script type="text/javascript" charset="utf-8">
     function createUser() {
       $.ajax({

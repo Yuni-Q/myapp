@@ -1,19 +1,45 @@
 <%- include('../layouts/header'); -%>
-    <p>Welcome to
+    <h2>Welcome to
         <%= title %>
-    </p>
-    <div>
-        <div>
-            <label for="date"></label>
-            <input type="date" name="date" placeholder="date" id="date" value="<%= date %>">
-            <br>
-            <label for="todo"></label>
-            <input type="text" name="todo" placeholder="todo" id="todo" value="<%= posts.todo %>">
-            <br>
-            <button onclick="updatePost('<%= posts._id %>')">글 작성</button>
-        </div>
+    </h2>
+    <section>
+        <table class="post">
+            <tr>
+                <td>
+                    <label for="date">Date</label>
+                </td>
+                <td>
+                    <input type="date" name="date" placeholder="date" id="date" value="<%= date %>">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="todo">ToDo</label>
+                </td>
+                <td>
+                    <input type="text" name="todo" placeholder="todo" id="todo" value="<%= posts.todo %>">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="priority">priority</label>
+                </td>
+                <td>
+                    <input type="number" name="priority" placeholder="priority" id="priority" value="<%= posts.priority %>">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="status">status</label>
+                </td>
+                <td>
+                    <input type="checkbox" name="status" placeholder="status" id="status" value="<%= posts.status %>">
+                </td>
+            </tr>
+        </table>
+        <button onclick="updatePost('<%= posts._id %>')" class="submitButton">글 작성</button>
+    </section>
 
-    </div>
     <a href="/user/page/post"></a>
     <script type="text/javascript" charset="utf-8">
         function updatePost(_id) {

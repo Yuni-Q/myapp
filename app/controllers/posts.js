@@ -21,13 +21,10 @@ router.get('/', isLoggedIn, async (req, res) => {
 });
 
 router.post('/', isLoggedIn, async (req, res) => {
-  const { todo, date } = req.body;
   const { _id } = req.user;
-  const result = await query.Post.create(todo, date, _id);
+  const result = await query.Post.create(req.body, _id);
   res.json(result);
 });
-
-
 
 router.get('/create', isLoggedIn, async (req, res) => {
   res.render('./posts/create', {
@@ -60,11 +57,18 @@ router.get('/:_id', isLoggedIn, async (req, res) => {
 
 router.put('/:_id', isLoggedIn, async (req, res) => {
   const { _id } = req.params;
-  const { todo, date } = req.body;
-  const posts = await Post.findOne({ _id });
-  posts.todo = todo;
-  posts.date = date;
-  const result = posts.save();
+  const {
+    todo,
+    date,
+    status,
+    priority,
+  } = req.body;
+  const post = await Post.findOne({ _id });
+  post.todo = todo;
+  post.date = date;
+  post.status = status;
+  post.priority = priority;
+  const result = post.save();
   res.json(result);
 });
 

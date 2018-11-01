@@ -486,6 +486,12 @@ h2 {
   text-align: center;
   margin-bottom: 10px;
 }
+.flash {
+  display: block;
+  position: relative;
+  text-align: center;
+  margin-bottom: 10px;
+}
 
 .login td, input {
   height: 50px;
@@ -519,4 +525,16 @@ h2 {
   position: relative;
   left: 50%;
   transform: translateX(-50%);
+}
+
+.post input {
+  width: 100%;
+}
+
+.post td:first-child {
+  width: 100px;
+  text-align: center;
+}
+.post td:nth-child(2) {
+  width: 300px;
 }

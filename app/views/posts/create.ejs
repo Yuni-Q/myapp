@@ -2,20 +2,43 @@
     <h2>Welcome to
         <%= title %>
     </h2>
-    <div>
-        <div>
-            <label for="date"></label>
-            <input type="date" name="date" placeholder="date" id="date">
-            <br>
-            <label for="todo"></label>
-            <input type="text" name="todo" placeholder="todo" id="todo">
-            <br>
-            <br>
-            <button onclick="createPost()">글 작성</button>
-            <input type="submit" value="글 작성 !!">
-        </div>
-
-    </div>
+    <section>
+        <table class="post">
+            <tr>
+                <td>
+                    <label for="date">Date</label>
+                </td>
+                <td>
+                    <input type="date" name="date" placeholder="date" id="date">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="todo">ToDo</label>
+                </td>
+                <td>
+                    <input type="text" name="todo" placeholder="todo" id="todo">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="priority">priority</label>
+                </td>
+                <td>
+                    <input type="number" name="priority" placeholder="priority" id="priority">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="status">status</label>
+                </td>
+                <td>
+                    <input type="checkbox" name="status" placeholder="status" id="status">
+                </td>
+            </tr>
+        </table>
+        <button onclick="createPost()" class="submitButton">글 작성</button>
+    </section>
     <a href="/user/page/post"></a>
     <script type="text/javascript" charset="utf-8">
         function createPost() {

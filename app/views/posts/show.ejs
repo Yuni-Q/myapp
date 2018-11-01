@@ -8,6 +8,8 @@
                 <tr>
                     <th>todo</th>
                     <th>date</th>
+                    <th>priority</th>
+                    <th>status</th>
                     <th>수정</th>
                     <th>삭제</th>
                 </tr>
@@ -18,6 +20,12 @@
                     </td>
                     <td>
                         <%= posts.date %>
+                    </td>
+                    <td>
+                        <%= posts.priority %>
+                    </td>
+                    <td>
+                        <%= posts.status %>
                     </td>
                     <% if (user._id == posts.userId) { %>
                         <td>
