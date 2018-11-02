@@ -1,15 +1,12 @@
 const express = require('express');
 const request = require('sync-request');
 const {
-  parseString
+  parseString,
 } = require('xml2js');
-const {
-  forEach
-} = require('async-foreach');
 const Bus = require('../mongoMedel/bus');
 const query = require('../mongoMedel/query');
 const {
-  isLoggedIn
+  isLoggedIn,
 } = require('../middlewares/passport/checkLogin');
 
 const router = express.Router();
@@ -57,38 +54,29 @@ router.get('/busstop', isLoggedIn, async (req, res) => {
     const busStopNameKo = decodeURI(busStopName);
     if (time[busStopNameKo]) return;
     time[busStopNameKo] = [];
-    const busStopNumberUri = `http://ws.bus.go.kr/api/rest/stationinfo/getStationByName?ServiceKey=${config.busStopKey}&stSrch=${busStopName}`;
-    console.log('busStopNumberUri', busStopNumberUri);
+    const busStopNumberUri = `http://ws.bus.go.kr/api/rest/stationinfo/getStationByName?ServiceKey=${global.config.busStopKey}&stSrch=${busStopName}`;
     const { body } = request('GET', busStopNumberUri);
-    console.log(body);
-    console.log('10');
     parseString(body, (err, result) => {
-      console.log('11');
-      console.log(result);
       const busStopNumber = result.ServiceResult.msgBody[0].itemList[0].arsId[0];
-      const busTime = `http://ws.bus.go.kr/api/rest/stationinfo/getStationByUid?ServiceKey=${config.busStopKey}&arsId=${busStopNumber}`;
-      console.log('busTime', busTime);
+      const busTime = `http://ws.bus.go.kr/api/rest/stationinfo/getStationByUid?ServiceKey=${global.config.busStopKey}&arsId=${busStopNumber}`;
       const body2 = request('GET', busTime).body;
-      console.log('12');
       parseString(body2, (err2, result2) => {
-        console.log('13');
         const {
           itemList,
         } = result2.ServiceResult.msgBody[0];
         itemList.forEach((element) => {
-          console.log('14', element.rtNm);
           time[busStopNameKo].push(`${element.rtNm}번 버스 도착 시간은 ${element.arrmsg1}입니다.`);
         });
-        console.log('1', time);
       });
-      console.log('2', time);
     });
   });
-  console.log('3', time);
-  // res.send('aa');
-  // const aa = await JSON.parse(time);
-  // console.log(aa);
-  res.json(time);
+  // const aa = JSON.stringify(time);
+  console.log(time);
+  res.render('./busses/busstop', {
+    title: '정류장',
+    time,
+    user: req.user,
+  });
 });
 
 router.get('/:_id/edit', isLoggedIn, async (req, res) => {
@@ -123,7 +111,7 @@ router.put('/:_id', isLoggedIn, async (req, res) => {
   const {
     _id,
   } = req.params;
-  const userId = req.user._id;
+  const { _id: userId } = req.user;
   const {
     name,
   } = req.body;

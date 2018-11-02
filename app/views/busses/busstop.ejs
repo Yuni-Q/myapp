@@ -1,0 +1,39 @@
+<%- include('../layouts/header'); -%>
+    <h2>Welcome to
+        <%= title %>
+    </h2>
+    <section>
+        <table class="post">
+            <tr>
+                <th>
+                    No
+                </th>
+                <th>
+                    버스 정류장
+                </th>
+                <th>
+                    버스 시간
+                </th>
+
+            </tr>
+            <% for(var i = 0 ; i < Object.keys(time).length ; i++){ %>
+                <tr>
+                    <td>
+                        <%= i+1 %>
+                    </td>
+                    <td>
+                        <% var name = Object.keys(time)[i] %>
+                            <%= Object.keys(time)[i] %>
+                    </td>
+                    <td>
+                        <% for(var j = 0 ; j < time[name].length ; j++){ %>
+                            <%= time[name][j] %>
+                                <br>
+                                <% } %>
+                    </td>
+                </tr>
+                <% } %>
+        </table>
+        <button onclick="createPost()" class="submitButton">글 작성</button>
+    </section>
+    <%- include('../layouts/footer'); -%>
