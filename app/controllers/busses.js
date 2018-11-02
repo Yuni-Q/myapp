@@ -17,7 +17,7 @@ const router = express.Router();
 
 router.get('/', isLoggedIn, async (req, res) => {
   const busses = await Bus.find({}).sort({
-    date: 1
+    date: 1,
   });
   res.render('./busses/index', {
     title: req.user.userName,
@@ -28,7 +28,7 @@ router.get('/', isLoggedIn, async (req, res) => {
 
 router.post('/', isLoggedIn, async (req, res) => {
   const {
-    _id
+    _id,
   } = req.user;
   const result = await query.Bus.create(req.body, _id);
   res.json(result);
@@ -50,11 +50,13 @@ router.get('/busstop', isLoggedIn, async (req, res) => {
   }).sort({
     date: 1,
   });
-  let time = [];
+  const time = {};
   busses.forEach((bus) => {
     let busStopName = bus.name;
     busStopName = encodeURI(busStopName);
-    time[busStopName] = [];
+    const busStopNameKo = decodeURI(busStopName);
+    if (time[busStopNameKo]) return;
+    time[busStopNameKo] = [];
     const busStopNumberUri = `http://ws.bus.go.kr/api/rest/stationinfo/getStationByName?ServiceKey=${config.busStopKey}&stSrch=${busStopName}`;
     console.log('busStopNumberUri', busStopNumberUri);
     const { body } = request('GET', busStopNumberUri);
@@ -75,7 +77,7 @@ router.get('/busstop', isLoggedIn, async (req, res) => {
         } = result2.ServiceResult.msgBody[0];
         itemList.forEach((element) => {
           console.log('14', element.rtNm);
-          time[busStopName].push(`${element.rtNm}번 버스 도착 시간은 ${element.arrmsg1}입니다.`);
+          time[busStopNameKo].push(`${element.rtNm}번 버스 도착 시간은 ${element.arrmsg1}입니다.`);
         });
         console.log('1', time);
       });
@@ -83,17 +85,18 @@ router.get('/busstop', isLoggedIn, async (req, res) => {
     });
   });
   console.log('3', time);
-  time = time;
-  console.log(time);
-  await res.send(time);
+  // res.send('aa');
+  // const aa = await JSON.parse(time);
+  // console.log(aa);
+  res.json(time);
 });
 
 router.get('/:_id/edit', isLoggedIn, async (req, res) => {
   const {
-    _id
+    _id,
   } = req.params;
   const bus = await Bus.findOne({
-    _id
+    _id,
   });
   res.render('./busses/edit', {
     title: '정류장 수정',
@@ -104,10 +107,10 @@ router.get('/:_id/edit', isLoggedIn, async (req, res) => {
 
 router.get('/:_id', isLoggedIn, async (req, res) => {
   const {
-    _id
+    _id,
   } = req.params;
   const bus = await Bus.findOne({
-    _id
+    _id,
   });
   res.render('./busses/show', {
     title: 'Show',
@@ -118,14 +121,14 @@ router.get('/:_id', isLoggedIn, async (req, res) => {
 
 router.put('/:_id', isLoggedIn, async (req, res) => {
   const {
-    _id
+    _id,
   } = req.params;
   const userId = req.user._id;
   const {
-    name
+    name,
   } = req.body;
   const bus = await Bus.findOne({
-    _id
+    _id,
   });
   bus.name = name;
   bus.userId = userId;
@@ -136,10 +139,10 @@ router.put('/:_id', isLoggedIn, async (req, res) => {
 
 router.delete('/:_id', isLoggedIn, async (req, res) => {
   const {
-    _id
+    _id,
   } = req.params;
   const result = await Bus.deleteOne({
-    _id
+    _id,
   });
   res.json(result);
 });
