@@ -54,7 +54,7 @@ router.get('/:_id', isLoggedIn, async (req, res) => {
 
 router.put('/:_id', isLoggedIn, async (req, res) => {
   const { _id } = req.params;
-  const userId = req.user._id;
+  const { _id: userId } = req.user;
   const {
     todo,
     date,

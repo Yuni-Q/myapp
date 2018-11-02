@@ -1,39 +1,64 @@
 <%- include('../layouts/header'); -%>
-    <h2>Welcome to
-        <%= title %>
-    </h2>
-    <section>
-        <table class="post">
-            <tr>
-                <th>
-                    No
-                </th>
-                <th>
-                    버스 정류장
-                </th>
-                <th>
-                    버스 시간
-                </th>
+<h2>Welcome to
+    <%= title %>
+</h2>
+<section>
+    <table class="users">
+        <tr>
+            <td>
+                <label for="busStopName">busStopName</label>
+            </td>
+            <td>
+                <input type="text" name="busStopName" placeholder="busStopName" id="busStopName">
+            </td>
+        </tr>
+        <tr>
+        </tr>
+    </table>
+    <button onclick="findBusStop()" class="submitButton">Find</button>
+    <br>
+    <br>
+</section>
+<section>
+    <table class="post">
+        <tr>
+            <th>
+                No
+            </th>
+            <th>
+                버스 정류장
+            </th>
+            <th>
+                버스 시간
+            </th>
+        </tr>
+        <% var name = Object.keys(time) %>
+        <% if (time[name]) { %>
+        <tr>
+            <td>
+                <%= 1 %>
+            </td>
+            <td>
+                
+                <%= name %>
+            </td>
+            <td>
 
-            </tr>
-            <% for(var i = 0 ; i < Object.keys(time).length ; i++){ %>
-                <tr>
-                    <td>
-                        <%= i+1 %>
-                    </td>
-                    <td>
-                        <% var name = Object.keys(time)[i] %>
-                            <%= Object.keys(time)[i] %>
-                    </td>
-                    <td>
-                        <% for(var j = 0 ; j < time[name].length ; j++){ %>
-                            <%= time[name][j] %>
-                                <br>
-                                <% } %>
-                    </td>
-                </tr>
+                <% for(var j = 0 ; j < time[name].length ; j++){ %>
+                <%= time[name][j] %>
+                <br>
                 <% } %>
-        </table>
-        <button onclick="createPost()" class="submitButton">글 작성</button>
-    </section>
-    <%- include('../layouts/footer'); -%>
+            </td>
+        </tr>
+        <% } %>
+    </table>
+</section>
+<script type="text/javascript" charset="utf-8">
+    function findBusStop() {
+        var busStopName = $('#busStopName').val();
+        var url = "/busses/busStop/" + busStopName;
+        console.log(url);
+        window.location.href = url;
+    }
+</script>
+<%- include('../layouts/footer'); -%>
