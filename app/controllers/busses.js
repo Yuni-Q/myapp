@@ -79,8 +79,7 @@ router.get('/busStops', isLoggedIn, async (req, res) => {
   });
 });
 
-router.get('/busStop', isLoggedIn, async (req, res) => {
-  console.log('aaaaaaa');
+router.get('/busStop', async (req, res) => {
   const time = {};
   res.render('./busses/findBus', {
     title: '정류장',
@@ -89,10 +88,8 @@ router.get('/busStop', isLoggedIn, async (req, res) => {
   });
 });
 
-router.get('/busStop/:busStopName', isLoggedIn, async (req, res) => {
-  console.log('aaaaaaaaaaa');
+router.get('/busStop/:busStopName', async (req, res) => {
   let { busStopName } = req.params;
-  console.log(busStopName);
   const time = {};
   busStopName = encodeURI(busStopName);
   const busStopNameKo = decodeURI(busStopName);
@@ -114,8 +111,6 @@ router.get('/busStop/:busStopName', isLoggedIn, async (req, res) => {
       });
     });
   });
-  // const aa = JSON.stringify(time);
-  console.log(time);
   res.render('./busses/findBus', {
     title: '정류장',
     time,
