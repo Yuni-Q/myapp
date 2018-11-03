@@ -35,7 +35,10 @@
                                 <td>
                                     <button onclick="deletePost('<%= posts[i]._id %>')">Delete</button>
                                 </td>
-                                <% } %>
+                                <% } else { %>
+                                    <td></td>
+                                    <td></td>
+                                    <% } %>
                         </tr>
                         <% }; %>
                             <% }; %>

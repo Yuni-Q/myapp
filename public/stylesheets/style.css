@@ -420,11 +420,20 @@ li {
   color: rgb(82, 82, 82); */
 }
 
+.main-nav > a > h1 {
+  position: relative;
+}
+
 ul {
-  position: absolute;
-  right: 20px;
-  top: 50%;
-  transform: translateY(-50%);
+  display: inline;
+  position: relative;
+  right: 0px;
+  /* margin-left: 50%; */
+  /* left: 200px; */
+  /* top: 50%; */
+  /* transform: translateY(-50%); */
+  background-color: red;
+
   /* display: inline; */
   /* list-style-type: none; */
   /* margin-block-start: 1em;
