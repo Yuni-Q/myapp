@@ -409,7 +409,8 @@ li {
   display: inline;
 }
 .main-nav {
-  position: relative;
+  display: flex;
+  justify-content: space-around;
   /* list-style: none;
   top: 33px;
   left: 790px;
@@ -420,13 +421,9 @@ li {
   color: rgb(82, 82, 82); */
 }
 
-.main-nav > a > h1 {
-  position: relative;
-}
-
 ul {
   display: inline;
-  position: relative;
+  /* position: relative; */
   right: 0px;
   /* margin-left: 50%; */
   /* left: 200px; */
