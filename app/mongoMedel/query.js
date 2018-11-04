@@ -70,6 +70,7 @@ exports.Post = {
     const post = new Post();
     post.todo = body.todo;
     post.date = body.date;
+    post.content = body.content;
     post.status = body.status;
     post.priority = body.priority;
     post.userId = userId;

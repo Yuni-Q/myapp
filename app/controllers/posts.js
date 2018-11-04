@@ -58,12 +58,14 @@ router.put('/:_id', isLoggedIn, async (req, res) => {
   const {
     todo,
     date,
+    content,
     status,
     priority,
   } = req.body;
   const post = await Post.findOne({ _id });
   post.todo = todo;
   post.date = date;
+  post.content = content;
   post.status = status;
   post.priority = priority;
   post.userId = userId;

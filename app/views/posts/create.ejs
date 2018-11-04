@@ -1,66 +1,76 @@
 <%- include('../layouts/header'); -%>
-    <h2>Welcome to
-        <%= title %>
-    </h2>
-    <section>
-        <table class="post">
-            <tr>
-                <td>
-                    <label for="date">Date</label>
-                </td>
-                <td>
-                    <input type="date" name="date" placeholder="date" id="date">
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label for="todo">ToDo</label>
-                </td>
-                <td>
-                    <input type="text" name="todo" placeholder="todo" id="todo">
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label for="priority">priority</label>
-                </td>
-                <td>
-                    <input type="number" name="priority" placeholder="priority" id="priority">
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label for="status">status</label>
-                </td>
-                <td>
-                    <input type="checkbox" name="status" placeholder="status" id="status" value="true">
-                </td>
-            </tr>
-        </table>
-        <button onclick="createPost()" class="submitButton">글 작성</button>
-    </section>
-    <script type="text/javascript" charset="utf-8">
-        function createPost() {
-            var status = false;
-            if ($('#status').val() == 'true') {
-                status = true;
-            }
-            $.ajax({
-                url: "/posts",
-                type: 'post',
-                dataType: 'json',
-                data: {
-                    date: $('#date').val(),
-                    todo: $('#todo').val(),
-                    priority: $('#priority').val(),
-                    status: status,
-                },
-                async: false,
-                success: function (retdata) {
-                    console.log(retdata);
-                    window.location.href = '/posts';
-                }
-            });
+<h2>Welcome to
+    <%= title %>
+</h2>
+<section>
+    <table class="post">
+        <tr>
+            <td>
+                <label for="date">Date</label>
+            </td>
+            <td>
+                <input type="date" name="date" placeholder="date" id="date">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="todo">ToDo</label>
+            </td>
+            <td>
+                <input type="text" name="todo" placeholder="todo" id="todo">
+            </td>
+        </tr>
+        </tr>
+        <tr>
+            <td>
+                <label for="content">Content</label>
+            </td>
+            <td>
+                <input type="text" name="content" placeholder="content" id="content">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="priority">priority</label>
+            </td>
+            <td>
+                <input type="number" name="priority" placeholder="priority" id="priority">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="status">status</label>
+            </td>
+            <td>
+                <input type="checkbox" name="status" placeholder="status" id="status" value="true">
+            </td>
+        </tr>
+    </table>
+    <button onclick="createPost()" class="submitButton">글 작성</button>
+</section>
+<script type="text/javascript" charset="utf-8">
+    function createPost() {
+        var status = false;
+        if ($('#status').val() == 'true') {
+            status = true;
         }
-    </script>
-    <%- include('../layouts/footer'); -%>
+        $.ajax({
+            url: "/posts",
+            type: 'post',
+            dataType: 'json',
+            data: {
+                date: $('#date').val(),
+                todo: $('#todo').val(),
+                content: $('#content').val(),
+                priority: $('#priority').val(),
+                status: status,
+            },
+            async: false,
+            success: function (retdata) {
+                console.log(retdata);
+                window.location.href = '/posts';
+            }
+        });
+    }
+</script>
+<%- include('../layouts/footer'); -%>
