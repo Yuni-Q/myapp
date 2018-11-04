@@ -22,6 +22,7 @@
         }
       });
     }
+
     function logoutUser() {
       $.ajax({
         url: "/users",
@@ -46,31 +47,41 @@
         </a>
         <ul>
           <% if (user) { %>
-            <li>
-              <a href="/posts/create">글 작성</a>
-            </li>
-            &nbsp;
-            <li>
-              <a href="/busses/create">버스정류장 등록</a>
-            </li>
-            &nbsp;
-            <li>
-              <a href="/busses/busStops">버스정류장</a>
-            </li>
-            &nbsp;
-            <li>
-              <button onclick="logoutUser()">logout</button>
-            </li>
-            <li>
-              <button onclick="deleteUser()">회원탈퇴</button>
-            </li>
-            <% } else { %>
-              <li>
-                <a href="/users/">sign_in</a>
-                &nbsp;&nbsp;
-                <a href="/members">sign_up</a>
-              </li>
-              <% } %>
+          <li>
+            <a href="/posts">게시판</a>
+          </li>
+          <!-- <li>
+            <a href="/posts/create">글 작성</a>
+          </li> -->
+          <li>
+            <a href="/busses">버스도착시간</a>
+          </li>
+          <!-- <li>
+            <a href="/busses/create">버스정류장 등록</a>
+          </li> -->
+          <li>
+            <a href="/busses/busStops">내정류장</a>
+          </li>
+          <li>
+            <a href="/busses/busStop">버스도착시간</a>
+          </li>
+          <li>
+            <button onclick="logoutUser()">logout</button>
+          </li>
+          <li>
+            <button onclick="deleteUser()">회원탈퇴</button>
+          </li>
+          <% } else { %>
+          <li>
+            <a href="/busses/busStop">버스도착시간</a>
+          </li>
+          <li>
+            <a href="/users/">sign_in</a>
+          </li>
+          <li>
+            <a href="/members">sign_up</a>
+          </li>
+          <% } %>
         </ul>
       </nav>
       <hr>

@@ -410,7 +410,7 @@ li {
 }
 .main-nav {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   /* list-style: none;
   top: 33px;
   left: 790px;
@@ -429,8 +429,6 @@ ul {
   /* left: 200px; */
   /* top: 50%; */
   /* transform: translateY(-50%); */
-  background-color: red;
-
   /* display: inline; */
   /* list-style-type: none; */
   /* margin-block-start: 1em;
@@ -543,4 +541,9 @@ h2 {
 }
 .post td:nth-child(2) {
   width: 300px;
+}
+
+a {
+  margin-left: 10px;
+  margin-right: 10px;
 }

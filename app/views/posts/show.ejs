@@ -17,26 +17,26 @@
 
                 <tr>
                     <td>
-                        <%= posts.todo %>
+                        <%= post.todo %>
                     </td>
                     <td>
-                        <%= posts.date %>
+                        <%= post.date %>
                     </td>
                     <td>
-                        <%= posts.content %>
+                        <%= post.content %>
                     </td>
                     <td>
-                        <%= posts.priority %>
+                        <%= post.priority %>
                     </td>
                     <td>
-                        <%= posts.status %>
+                        <%= post.status %>
                     </td>
-                    <% if (user._id == posts.userId) { %>
+                    <% if (user._id == post.userId) { %>
                         <td>
-                            <a href="/posts/<%= posts._id %>/edit">수정</a>
+                            <a href="/posts/<%= post._id %>/edit">수정</a>
                         </td>
                         <td>
-                            <button onclick="deletePost('<%= posts._id %>')">삭제</button>
+                            <button onclick="deletePost('<%= post._id %>')">삭제</button>
                         </td>
                         <% } %>
                 </tr>
