@@ -4,6 +4,7 @@ const { Schema } = mongoose;
 
 const Bus = new Schema({
   name: String,
+  busStopNumber: Number,
   userId: String,
 });
 

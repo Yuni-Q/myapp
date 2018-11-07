@@ -92,6 +92,7 @@ exports.Bus = {
   create(body, userId) {
     const bus = new Bus();
     bus.name = body.name;
+    bus.busStopNumber = body.busStopNumber;
     bus.userId = userId;
     return bus.save();
   },

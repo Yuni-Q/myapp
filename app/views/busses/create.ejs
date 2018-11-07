@@ -13,21 +13,40 @@
                 </td>
             </tr>
         </table>
-        <button onclick="createPost()" class="submitButton">글 작성</button>
+        <button onclick="createPost()" class="submitButton">목록 보기</button>
+        <div class="busStop">
+
+        </div>
     </section>
     <script type="text/javascript" charset="utf-8">
         function createPost() {
+            var val = $('#name').val();
+            var url = "/busses/busStop/" + val;
             $.ajax({
-                url: "/busses",
-                type: 'post',
-                dataType: 'json',
-                data: {
-                    name: $('#name').val(),
-                },
+                url,
+                type: 'get',
                 async: false,
                 success: function (retdata) {
-                    console.log(retdata);
-                    window.location.href = '/posts';
+                    var key = Object.keys(retdata[val]);
+                    for(var i = 0 ; i < key.length; i ++ ) {
+                        console.log(retdata[val][key[i]]);
+                        var newDiv = document.createElement("div"); 
+                        var newDiv2 = document.createElement("div"); 
+                        // and give it some content 
+                        var newContent = document.createTextNode(retdata[val][key[i]]); 
+                        var newContent2 = document.createTextNode('<div>aa</div>'); 
+                        // add the text node to the newly created div
+                        
+                        newDiv2.appendChild(newContent2);  
+                        newDiv.appendChild(newDiv2);  
+                        newDiv.appendChild(newContent);  
+
+                        // add the newly created element and its content into the DOM 
+                        var currentDiv = document.getElementById("busStop"); 
+                        document.body.insertBefore(newDiv, currentDiv); 
+                    };
+                    // create a new div element 
+                    
                 }
             });
         }

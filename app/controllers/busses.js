@@ -93,29 +93,35 @@ router.get('/busStop/:busStopName', async (req, res) => {
   const time = {};
   busStopName = encodeURI(busStopName);
   const busStopNameKo = decodeURI(busStopName);
-  time[busStopNameKo] = [];
+  time[busStopNameKo] = {};
   const busStopNumberUri = `http://ws.bus.go.kr/api/rest/stationinfo/getStationByName?ServiceKey=${global.config.busStopKey}&stSrch=${busStopName}`;
   const {
     body,
   } = request('GET', busStopNumberUri);
   parseString(body, (err, result) => {
-    const busStopNumber = result.ServiceResult.msgBody[0].itemList[0].arsId[0];
-    const busTime = `http://ws.bus.go.kr/api/rest/stationinfo/getStationByUid?ServiceKey=${global.config.busStopKey}&arsId=${busStopNumber}`;
-    const body2 = request('GET', busTime).body;
-    parseString(body2, (err2, result2) => {
-      const {
-        itemList,
-      } = result2.ServiceResult.msgBody[0];
-      itemList.forEach((element) => {
-        time[busStopNameKo].push(`${element.rtNm}번 버스 도착 시간은 ${element.arrmsg1}입니다.`);
+    result.ServiceResult.msgBody[0].itemList.forEach((item) => {
+      const busStopNumber = item.arsId[0];
+      time[busStopNameKo][busStopNumber] = [];
+      const busTime = `http://ws.bus.go.kr/api/rest/stationinfo/getStationByUid?ServiceKey=${global.config.busStopKey}&arsId=${busStopNumber}`;
+      const body2 = request('GET', busTime).body;
+      parseString(body2, (err2, result2) => {
+        const {
+          itemList,
+        } = result2.ServiceResult.msgBody[0];
+        if (itemList) {
+          itemList.forEach((element) => {
+            time[busStopNameKo][busStopNumber].push(`${element.rtNm}번 버스 도착 시간은 ${element.arrmsg1}입니다.`);
+          });
+        }
       });
     });
   });
-  res.render('./busses/findBus', {
-    title: '정류장',
-    time,
-    user: req.user,
-  });
+  res.json(time);
+  // res.render('./busses/findBus', {
+  //   title: '정류장',
+  //   time,
+  //   user: req.user,
+  // });
 });
 
 router.get('/:_id/edit', isLoggedIn, async (req, res) => {
@@ -155,11 +161,13 @@ router.put('/:_id', isLoggedIn, async (req, res) => {
   } = req.user;
   const {
     name,
+    busStopNumber,
   } = req.body;
   const bus = await Bus.findOne({
     _id,
   });
   bus.name = name;
+  bus.busStopNumber = busStopNumber;
   bus.userId = userId;
   const result = bus.save();
   res.json(result);
