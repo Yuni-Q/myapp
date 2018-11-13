@@ -1,28 +1,56 @@
 
-const request = require('request');
-const { parseString } = require('xml2js');
-const config = require('./config/development.json');
 
+const { parseString } = require('xml2js');
+const request = require('sync-request');
+const fetch = require('node-fetch');
+
+const busStopNumbers = [];
+const busStopTimes = {};
 let busStopName = '홍대입구역';
 busStopName = encodeURI(busStopName);
-const busStopNumberUri = `http://ws.bus.go.kr/api/rest/stationinfo/getStationByName?ServiceKey=${config.busStopKey}&stSrch=${busStopName}`;
-request(busStopNumberUri, (error, response, body) => {
-  parseString(body, (err, result) => {
-    (result.ServiceResult.msgBody[0].itemList).map((item) => {
-      console.log(item);
-      return item;
+
+const busStopKey = 'ZToJL71tb0BfKZ6CzMa%2FYCbxw5sVQQks%2F%2BEhWi0%2B29s7PdXcQGYxJGChT%2FRysDxAZWmhSQRT3D6WT90GqkwJJA%3D%3D';
+const busStopNumberUri = `http://ws.bus.go.kr/api/rest/stationinfo/getStationByName?ServiceKey=${busStopKey}&stSrch=${busStopName}`;
+fetch(busStopNumberUri)
+  .then(res => res.text()) // XML
+  .then(xml => parseString(xml, (err, result) => {
+    if (err) {
+      console.log(err);
+      return;
+    }
+    result.ServiceResult.msgBody[0].itemList.forEach((element) => {
+      // console.log(element.arsId)
+      busStopNumbers.push(element.arsId);
     });
-    // const busStopNumber = result.ServiceResult.msgBody[0].itemList[0].arsId[0];
-    // const busTime = `http://ws.bus.go.kr/api/rest/stationinfo/getStationByUid?ServiceKey=${config.busStopKey}&arsId=${busStopNumber}`;
-    // request(busTime, (error2, response2, body2) => {
-    //   parseString(body2, (err2, result2) => {
-    //     (result2.ServiceResult.msgBody[0].itemList).forEach(((element) => {
-    //       console.log(`${element.rtNm}번 버스 도착 시간은 ${element.arrmsg1}입니다.`);
-    //     }));
-    //   });
-    // });
-  });
-});
+  }))
+  .then(() => {
+    busStopNumbers.forEach((element, index) => {
+      busStopTimes[index] = [];
+      const busTime = `http://ws.bus.go.kr/api/rest/stationinfo/getStationByUid?ServiceKey=${busStopKey}&arsId=${element}`;
+      const {
+        body,
+      } = request('GET', busTime);
+      // body2 = body2.text() // XML
+      parseString(body, (err, result2) => {
+        if (err) {
+          console.log(err);
+          return;
+        }
+        const {
+          itemList,
+        } = result2.ServiceResult.msgBody[0];
+        if (itemList) {
+          itemList.forEach((element2) => {
+            busStopTimes[index].push(`${element2.rtNm}번 버스 도착 시간은 ${element2.arrmsg1}입니다.`);
+          });
+        }
+      });
+    });
+  })
+  .then(() => {
+    console.log(busStopTimes);
+  })
+  .catch(err => console.log(err));
 
 
 // const a = { b: 1, c: 2 };
