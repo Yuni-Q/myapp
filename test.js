@@ -19,13 +19,13 @@ fetch(busStopNumberUri)
       return;
     }
     result.ServiceResult.msgBody[0].itemList.forEach((element) => {
-      // console.log(element.arsId)
-      busStopNumbers.push(element.arsId);
+      busStopNumbers.push(element.arsId.toString());
     });
   }))
   .then(() => {
-    busStopNumbers.forEach((element, index) => {
-      busStopTimes[index] = [];
+    // console.log(busStopNumbers);
+    busStopNumbers.forEach((element) => {
+      busStopTimes[element] = [];
       const busTime = `http://ws.bus.go.kr/api/rest/stationinfo/getStationByUid?ServiceKey=${busStopKey}&arsId=${element}`;
       const {
         body,
@@ -41,7 +41,7 @@ fetch(busStopNumberUri)
         } = result2.ServiceResult.msgBody[0];
         if (itemList) {
           itemList.forEach((element2) => {
-            busStopTimes[index].push(`${element2.rtNm}번 버스 도착 시간은 ${element2.arrmsg1}입니다.`);
+            busStopTimes[element].push(`${element2.rtNm}번 버스 도착 시간은 ${element2.arrmsg1}입니다.`);
           });
         }
       });
