@@ -6,7 +6,7 @@ const router = express.Router();
 
 /* GET home page. */
 router.get('/', (req, res) => {
-  const url = `${req.protocol}://${req.host}:${process.env.PORT || '3000'}`;
+  const url = `${req.protocol}://${req.host}:${process.env.PORT || '8080'}`;
   res.cookie('name', 'Yun');
   res.render('index', { title: '안녕하세요', url });
 

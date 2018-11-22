@@ -41,7 +41,11 @@ fetch(busStopNumberUri)
         } = result2.ServiceResult.msgBody[0];
         if (itemList) {
           itemList.forEach((element2) => {
-            busStopTimes[element].push(`${element2.rtNm}번 버스 도착 시간은 ${element2.arrmsg1}입니다.`);
+            const temp = {};
+            temp[element2.rtNm] = element2.arrmsg1.toString();
+            busStopTimes[element].push(temp);
+            // console.log(element2.arrmsg1);
+            // busStopTimes[element].push(`${element2.rtNm}번 버스 도착 시간은 ${element2.arrmsg1}입니다.`);
           });
         }
       });

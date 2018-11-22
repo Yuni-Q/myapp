@@ -7,23 +7,7 @@ const {
 
 const router = express.Router();
 
-/* GET users listing. */
-router.get('/', isNotLoggedIn, (req, res) => {
-  const url = `${req.protocol}://${req.host}:${process.env.PORT || '3000'}`;
-  if (req.user) {
-    res.redirect('/posts');
-  } else {
-    res.render('./users/index', {
-      title: 'users',
-      messages: '로그인해 주세요 !!',
-      user: null,
-      url,
-    });
-  }
-});
-
 router.post('/', isNotLoggedIn, (req, res, next) => {
-  const url = `${req.protocol}://${req.host}:${process.env.PORT || '3000'}`;
   passport.authenticate('local', (authError, user, info) => {
     if (authError) {
       return next(authError);
@@ -34,7 +18,6 @@ router.post('/', isNotLoggedIn, (req, res, next) => {
         title: info.message,
         messages: '올바르지 않습니다. !!',
         user: null,
-        url,
       });
     }
     return req.login(user, (loginError) => {
