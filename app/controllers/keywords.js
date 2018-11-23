@@ -29,9 +29,18 @@ router.get('/:keywords', async (req, res, next) => {
   const { keywords } = req.params;
   try {
     const result = await query.keywords.aggregate(keywords);
-    res.json(result);
+    res.json({
+      ok: true,
+      message: null,
+      result,
+    });
   } catch (err) {
     next(err);
+    res.json({
+      ok: false,
+      message: '에러 발생',
+      result: err,
+    });
   }
 });
 

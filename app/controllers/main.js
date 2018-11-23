@@ -56,10 +56,19 @@ router.get('/movies', async (req, res) => {
           e.size += ' MB';
         });
         console.timeEnd();
-        res.json(result);
+        res.json({
+          ok: true,
+          message: null,
+          result,
+        });
       }
     } catch (_err) {
       console.log(_err);
+      res.json({
+        ok: false,
+        message: '에러 발생',
+        result: error,
+      });
     }
   });
 });

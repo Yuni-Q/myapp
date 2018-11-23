@@ -29,7 +29,11 @@ router.post('/', isLoggedIn, async (req, res) => {
     _id,
   } = req.user;
   const result = await query.Bus.create(req.body, _id);
-  res.json(result);
+  res.json({
+    ok: true,
+    message: null,
+    result,
+  });
 });
 
 // router.get('/create', isLoggedIn, async (req, res) => {
@@ -107,14 +111,14 @@ router.post('/', isLoggedIn, async (req, res) => {
 //   });
 // });
 
-router.get('/busStop', async (req, res) => {
-  const time = {};
-  res.render('./busses/findBus', {
-    title: '정류장',
-    time,
-    user: req.user,
-  });
-});
+// router.get('/busStop', async (req, res) => {
+//   const time = {};
+//   res.render('./busses/findBus', {
+//     title: '정류장',
+//     time,
+//     user: req.user,
+//   });
+// });
 
 router.get('/busStop/:busStopName', async (req, res) => {
   let {
@@ -163,9 +167,20 @@ router.get('/busStop/:busStopName', async (req, res) => {
       });
     })
     .then(() => {
-      res.json(busStopTimes);
+      res.json({
+        ok: true,
+        message: null,
+        result: busStopTimes,
+      });
     })
-    .catch(err => console.log(err));
+    .catch((error) => {
+      console.log(err);
+      res.json({
+        ok: false,
+        message: '에러 발생',
+        result: error,
+      });
+    });
 });
 
 router.get('/:_id/edit', isLoggedIn, async (req, res) => {
@@ -175,10 +190,10 @@ router.get('/:_id/edit', isLoggedIn, async (req, res) => {
   const bus = await Bus.findOne({
     _id,
   });
-  res.render('./busses/edit', {
-    title: '정류장 수정',
-    bus,
-    user: req.user,
+  res.json({
+    ok: true,
+    message: null,
+    result: bus,
   });
 });
 
@@ -189,10 +204,10 @@ router.get('/:_id', isLoggedIn, async (req, res) => {
   const bus = await Bus.findOne({
     _id,
   });
-  res.render('./busses/show', {
-    title: 'Show',
-    bus,
-    user: req.user,
+  res.json({
+    ok: true,
+    message: null,
+    result: bus,
   });
 });
 
@@ -214,7 +229,11 @@ router.put('/:_id', isLoggedIn, async (req, res) => {
   bus.busStopNumber = busStopNumber;
   bus.userId = userId;
   const result = bus.save();
-  res.json(result);
+  res.json({
+    ok: true,
+    message: null,
+    result,
+  });
 });
 
 
@@ -225,7 +244,11 @@ router.delete('/:_id', isLoggedIn, async (req, res) => {
   const result = await Bus.deleteOne({
     _id,
   });
-  res.json(result);
+  res.json({
+    ok: true,
+    message: null,
+    result,
+  });
 });
 
 module.exports = router;

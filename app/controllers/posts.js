@@ -9,17 +9,21 @@ const router = express.Router();
 
 router.get('/', isLoggedIn, async (req, res) => {
   const posts = await Post.find({}).sort({ date: 1 });
-  res.render('./posts/index', {
-    title: req.user.userName,
-    posts,
-    user: req.user,
+  res.json({
+    ok: true,
+    message: null,
+    result: posts,
   });
 });
 
 router.post('/', isLoggedIn, async (req, res) => {
   const { _id } = req.user;
   const result = await query.Post.create(req.body, _id);
-  res.json(result);
+  res.json({
+    ok: true,
+    message: null,
+    result,
+  });
 });
 
 router.put('/:_id', isLoggedIn, async (req, res) => {
@@ -40,14 +44,22 @@ router.put('/:_id', isLoggedIn, async (req, res) => {
   post.priority = priority;
   post.userId = userId;
   const result = post.save();
-  res.json(result);
+  res.json({
+    ok: true,
+    message: null,
+    result,
+  });
 });
 
 
 router.delete('/:_id', isLoggedIn, async (req, res) => {
   const { _id } = req.params;
   const result = await Post.deleteOne({ _id });
-  res.json(result);
+  res.json({
+    ok: true,
+    message: null,
+    result,
+  });
 });
 
 module.exports = router;

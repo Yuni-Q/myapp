@@ -5,7 +5,10 @@ exports.isLoggedIn = (req, res, next) => {
   if (req.isAuthenticated()) {
     next();
   } else {
-    res.redirect('/users');
+    res.json({
+      ok: false,
+      message: '로그인이 필요합니다.',
+    });
   }
 };
 
@@ -13,6 +16,9 @@ exports.isNotLoggedIn = (req, res, next) => {
   if (!req.isAuthenticated()) {
     next();
   } else {
-    res.redirect('/posts');
+    res.json({
+      ok: false,
+      message: '이미 로그인 되어 있습니다.',
+    });
   }
 };

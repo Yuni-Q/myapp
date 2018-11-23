@@ -1,48 +1,54 @@
-
 const express = require('express');
-const crypto = require('../helpers/cryptoHelper');
-const User = require('../mongoMedel/user');
-const query = require('../mongoMedel/query');
-const { isLoggedIn, isNotLoggedIn } = require('../middlewares/passport/checkLogin');
+const passport = require('passport');
+const {
+  isLoggedIn,
+  isNotLoggedIn,
+} = require('../middlewares/passport/checkLogin');
 
 const router = express.Router();
 
-router.post('/', isNotLoggedIn, async (req, res) => {
-  const { user } = req;
-  const {
-    userName,
-    password,
-  } = req.body;
-  try {
-    const exUser = await User.findOne({ userName });
-    if (exUser) {
-      res.render('./members/index', {
-        title: 'members',
-        messages: '이미 가입 된 유저 name 입니다.',
-        user,
+router.post('/', isNotLoggedIn, (req, res, next) => {
+  passport.authenticate('local', (authError, user, info) => {
+    if (authError) {
+      return next(authError);
+    }
+    if (!user) {
+      req.flash('loginError', info.message);
+      res.json({
+        ok: false,
+        message: info.message,
+        result = info,
       });
       return;
     }
-    const pwd = await crypto.makePssword(password);
-    const result = await query.User.create(userName, pwd);
-    res.json(result);
-    return;
-  } catch (error) {
-    console.log(error);
-    res.render('error', {
-      title: 'error',
-      messages: '회원 가입 중 에러 발생 !!',
+    return req.login(user, (loginError) => {
+      if (loginError) {
+        return next(loginError);
+      }
+      res.json({
+        ok: true,
+        message: null,
+        result = info,
+      });
     });
-  }
+  })(req, res, next); // 미들웨어 내의 미들웨어에는 (req, res, next)를 붙입니다.
 });
 
 router.delete('/', isLoggedIn, async (req, res) => {
-  const { _id } = req.user;
-  await User.deleteOne({ _id });
-  await req.session.destroy(() => {
-  });
-  const result = 1;
-  res.json(result);
+  try {
+    await req.logout();
+    await req.session.destroy();
+    res.json({
+      ok: true,
+      message: null,
+    });
+  } catch (error) {
+    res.json({
+      ok: false,
+      message: '로그아웃중 에러 발생',
+      result = error,
+    });
+  }
 });
 
 module.exports = router;
