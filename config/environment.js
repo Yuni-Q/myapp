@@ -10,6 +10,8 @@ const compression = require('compression');
 const cookieParser = require('cookie-parser');
 const bearerToken = require('express-bearer-token');
 const passportConfig = require('../app/middlewares/passport');
+const auth = require('../app/middlewares/passport/auth')(); // 위의 auth.js 를 추가한다.
+
 
 global.config = require('config');
 
@@ -43,6 +45,8 @@ module.exports = (app) => {
   app.use(flash());
   app.use(passport.initialize());
   app.use(passport.session());
+
+  app.use(auth.initialize()); // 초기화
 
   // view engine setup
   app.set('view engine', 'ejs');

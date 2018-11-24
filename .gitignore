@@ -67,3 +67,4 @@ developer.json
 config.json
 development.json
 production.json
+jwt_config.js
