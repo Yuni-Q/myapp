@@ -17,18 +17,17 @@ router.post('/', isNotLoggedIn, (req, res, next) => {
       res.json({
         ok: false,
         message: info.message,
-        result = info,
+        result: info,
       });
-      return;
     }
     return req.login(user, (loginError) => {
       if (loginError) {
-        return next(loginError);
+        next(loginError);
       }
       res.json({
         ok: true,
         message: null,
-        result = info,
+        result: info,
       });
     });
   })(req, res, next); // 미들웨어 내의 미들웨어에는 (req, res, next)를 붙입니다.
@@ -46,7 +45,7 @@ router.delete('/', isLoggedIn, async (req, res) => {
     res.json({
       ok: false,
       message: '로그아웃중 에러 발생',
-      result = error,
+      result: error,
     });
   }
 });
