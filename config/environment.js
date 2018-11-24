@@ -31,8 +31,8 @@ module.exports = (app) => {
       saveUninitialized: false,
       secret: global.config.app.sessionSecret,
       cookie: {
-        httpOnly: true,
-        secure: false,
+        // httpOnly: true,
+        // secure: false,
       },
     }),
   );
