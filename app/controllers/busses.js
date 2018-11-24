@@ -174,7 +174,7 @@ router.get('/busStop/:busStopName', async (req, res) => {
       });
     })
     .catch((error) => {
-      console.log(err);
+      console.log(error);
       res.json({
         ok: false,
         message: '에러 발생',
