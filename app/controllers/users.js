@@ -4,7 +4,7 @@ const crypto = require('../helpers/cryptoHelper');
 const User = require('../mongoMedel/user');
 const query = require('../mongoMedel/query');
 const { isLoggedIn, isNotLoggedIn } = require('../middlewares/passport/checkLogin');
-const resultFormat = require('../helpers/resultFormat');
+// const resultFormat = require('../helpers/resultFormat');
 
 const router = express.Router();
 
@@ -27,6 +27,7 @@ router.post('/', isNotLoggedIn, async (req, res) => {
     res.json({
       ok: true,
       message: null,
+      result,
     });
     return;
   } catch (error) {
@@ -48,7 +49,7 @@ router.delete('/', isLoggedIn, async (req, res) => {
       ok: true,
       message: null,
     });
-  } catch (errro) {
+  } catch (error) {
     res.json({
       ok: false,
       message: '회원 탈퇴 중 에러 발생',

@@ -10,11 +10,11 @@ const router = express.Router();
 router.post('/', isNotLoggedIn, (req, res, next) => {
   passport.authenticate('local', (authError, user, info) => {
     if (authError) {
-      return next(authError);
+      next(authError);
     }
     if (!user) {
       req.flash('loginError', info.message);
-      res.json({
+      return res.json({
         ok: false,
         message: info.message,
         result: info,
