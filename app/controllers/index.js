@@ -4,6 +4,5 @@ module.exports = {
   main: require('./main'),
   signIn: require('./signIn'),
   posts: require('./posts'),
-  token: require('./token'),
   users: require('./users'),
 };

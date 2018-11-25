@@ -1,16 +1,15 @@
 
 const cors = require('cors');
 const path = require('path');
-const passport = require('passport'); // passport module add
+// const passport = require('passport'); // passport module add
 const mongoose = require('mongoose');
-const flash = require('connect-flash');
+// const flash = require('connect-flash');
 const bodyParser = require('body-parser');
-const session = require('express-session');
+// const session = require('express-session');
 const compression = require('compression');
-const cookieParser = require('cookie-parser');
+// const cookieParser = require('cookie-parser');
 const bearerToken = require('express-bearer-token');
-const passportConfig = require('../app/middlewares/passport');
-const auth = require('../app/middlewares/passport/auth')(); // 위의 auth.js 를 추가한다.
+// const passportConfig = require('../app/middlewares/passport');
 
 
 global.config = require('config');
@@ -25,28 +24,28 @@ module.exports = (app) => {
   // CORS 설정
   app.use(cors());
 
-  passportConfig(passport);
-  app.use(cookieParser());
-  app.use(
-    session({
-      resave: true,
-      saveUninitialized: false,
-      secret: global.config.app.sessionSecret,
-      cookie: {
-        // httpOnly: true,
-        // secure: false,
-      },
-    }),
-  );
+  // passportConfig(passport);
+  // app.use(cookieParser());
+  // app.use(
+  //   session({
+  //     resave: true,
+  //     saveUninitialized: false,
+  //     secret: global.config.app.sessionSecret,
+  //     cookie: {
+  //       // httpOnly: true,
+  //       // secure: false,
+  //     },
+  //   }),
+  // );
   app.use(compression());
   app.use(bearerToken());
 
 
-  app.use(flash());
-  app.use(passport.initialize());
-  app.use(passport.session());
+  // app.use(flash());
+  // app.use(passport.initialize());
+  // app.use(passport.session());
 
-  app.use(auth.initialize()); // 초기화
+  // app.use(auth.initialize()); // 초기화
 
   // view engine setup
   app.set('view engine', 'ejs');
