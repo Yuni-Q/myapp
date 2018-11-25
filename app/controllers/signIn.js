@@ -15,7 +15,8 @@ router.post('/', isNotLoggedIn, async (req, res) => {
     password,
   } = req.body;
   const secret = req.app.get('jwt-secret');
-  const user = await Users.findObe({ email });
+  const user = await Users.findOne({ email });
+  console.log(user);
   if (!user) {
     res.json(resultFormat(false, '이메일이 존재하지 않습니다.'));
     return;
