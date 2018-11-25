@@ -20,7 +20,7 @@ module.exports = (app) => {
   app.use(bodyParser.urlencoded({
     extended: true,
   }));
-
+  app.set('jwt-secret', global.config.secret);
   // CORS 설정
   app.use(cors());
 

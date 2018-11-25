@@ -1,7 +1,7 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const resultFormat = require('../helpers/resultFormat');
-const Users = require('../mongoMedel/user');
+const User = require('../mongoMedel/user');
 const {
   isLoggedIn,
   isNotLoggedIn,
@@ -14,9 +14,10 @@ router.post('/', isNotLoggedIn, async (req, res) => {
     email,
     password,
   } = req.body;
+  console.log(req.body);
   const secret = req.app.get('jwt-secret');
-  const user = await Users.findOne({ email });
-  console.log(user);
+  const user = await User.findOne({ email });
+  console.log('user', user);
   if (!user) {
     res.json(resultFormat(false, '이메일이 존재하지 않습니다.'));
     return;
@@ -46,20 +47,20 @@ router.post('/', isNotLoggedIn, async (req, res) => {
     await t.then(async (token) => {
       result = { token };
       console.log(result.token);
-      user.token = token;
+      user.token = result.token;
       await user.save();
-      res.json(resultFormat(true, null, result));
+      res.json(resultFormat(true, null, user));
     });
     return;
   }
-  res.json(resultFormat(false, '이미 존재하는 이메일 입니다'));
+  res.json(resultFormat(false, '비밀번호가 다릅니다.'));
 });
 
 router.delete('/', isLoggedIn, async (req, res) => {
   try {
     const { email } = req.user;
     console.log('user', req.user);
-    const user = await Users.findObe({ email });
+    const user = await User.findObe({ email });
     user.token = `logout${user.token}`;
   } catch (error) {
     res.json(resultFormat(false, '에러가 발생했습니다.', error));
