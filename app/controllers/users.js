@@ -1,60 +1,80 @@
-
 const express = require('express');
-const crypto = require('../helpers/cryptoHelper');
-const User = require('../mongoMedel/user');
-const query = require('../mongoMedel/query');
-const { isLoggedIn, isNotLoggedIn } = require('../middlewares/passport/checkLogin');
-// const resultFormat = require('../helpers/resultFormat');
+
+const resultFormat = require('../helpers/resultFormat');
+const {
+  isLoggedIn,
+  isNotLoggedIn,
+} = require('../middlewares/checkLogin');
+const Users = require('../mongoMedel/user');
 
 const router = express.Router();
 
+router.get('/', isLoggedIn, async (req, res) => {
+  try {
+    const users = await Users.find({});
+    console.log(users);
+    res.json(resultFormat(true, null, users));
+  } catch (error) {
+    res.json(resultFormat(false, error.message));
+  }
+});
+
 router.post('/', isNotLoggedIn, async (req, res) => {
   const {
-    userName,
-    password,
+    email,
   } = req.body;
   try {
-    const exUser = await User.findOne({ userName });
-    if (exUser) {
-      res.json({
-        ok: false,
-        message: '이미 가입 된 유저 name 입니다.',
-      });
+    const exUsers = await Users.findObe({ email });
+    if (exUsers) {
+      res.json(resultFormat(400, '이미 가입 된 유저 name 입니다.'));
       return;
     }
-    const pwd = await crypto.makePssword(password);
-    const result = await query.User.create(userName, pwd);
-    res.json({
-      ok: true,
-      message: null,
-      result,
+
+    const user = new Users();
+    Object.keys(req.body).forEach((key) => {
+      user[key] = req.body[key];
     });
-    return;
+    await user.save();
+    res.json(resultFormat(true, null, user));
   } catch (error) {
-    console.log(error);
-    res.json({
-      ok: false,
-      message: '회원 가입 중 에러 발생 !!',
-      result: error,
-    });
+    res.json(resultFormat(false, error.message));
   }
+});
+
+router.put('/', isLoggedIn, async (req, res) => {
+  const { _id } = req.user;
+  try {
+    const exUser = await Users.findOne({ _id });
+    Object.keys(req.body).forEach((key) => {
+      exUser[key] = req.body[key];
+    });
+    await exUser.save();
+  } catch (error) {
+    res.json(resultFormat(false, error.message));
+    return;
+  }
+  res.json(resultFormat(true, null));
 });
 
 router.delete('/', isLoggedIn, async (req, res) => {
   const { _id } = req.user;
   try {
-    await User.deleteOne({ _id });
-    await req.session.destroy();
-    res.json({
-      ok: true,
-      message: null,
-    });
+    const exUser = await Users.findOne({ _id });
+    exUser.isDelete = true;
   } catch (error) {
-    res.json({
-      ok: false,
-      message: '회원 탈퇴 중 에러 발생',
-      result: error,
-    });
+    res.json(resultFormat(false, error.message));
+    return;
+  }
+  res.json(resultFormat(true, null));
+});
+
+router.get('/:id', isLoggedIn, async (req, res) => {
+  const { _id } = req.user;
+  try {
+    const user = await await Users.findOne({ _id });
+    res.json(resultFormat(true, null, user));
+  } catch (error) {
+    res.json(resultFormat(false, error.message));
   }
 });
 
