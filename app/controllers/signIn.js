@@ -58,10 +58,13 @@ router.post('/', isNotLoggedIn, async (req, res) => {
 
 router.delete('/', isLoggedIn, async (req, res) => {
   try {
-    const { email } = req.user;
-    console.log('user', req.user);
-    const user = await User.findObe({ email });
+    // const { email } = req.user;
+    // console.log('user', req.user);
+    const { _id: id } = req.user;
+    const user = await User.findOne({ _id: id });
+    console.log('1');
     user.token = `logout${user.token}`;
+    user.save();
   } catch (error) {
     res.json(resultFormat(false, '에러가 발생했습니다.', error));
     return;

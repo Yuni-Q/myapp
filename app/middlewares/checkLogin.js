@@ -6,7 +6,7 @@ const resultFormat = require('../helpers/resultFormat');
 
 exports.isLoggedIn = async (req, res, next) => {
   try {
-    if (req.headers.authorization) {
+    if (!req.headers.authorization) {
       res.json(resultFormat(false, '토큰이 없습니다.'));
       return;
     }
