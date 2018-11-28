@@ -62,7 +62,6 @@ router.delete('/', isLoggedIn, async (req, res) => {
     // console.log('user', req.user);
     const { _id: id } = req.user;
     const user = await User.findOne({ _id: id });
-    console.log('1');
     user.token = `logout${user.token}`;
     user.save();
   } catch (error) {
