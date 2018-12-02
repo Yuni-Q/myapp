@@ -24,9 +24,9 @@ router.post('/', isNotLoggedIn, async (req, res) => {
     email,
   } = req.body;
   try {
-    const exUsers = await Users.findObe({ email });
+    const exUsers = await Users.findOne({ email });
     if (exUsers) {
-      res.json(resultFormat(400, '이미 가입 된 유저 name 입니다.'));
+      res.json(resultFormat(false, '이미 가입 된 유저 name 입니다.'));
       return;
     }
 

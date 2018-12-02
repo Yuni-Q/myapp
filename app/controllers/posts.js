@@ -2,12 +2,12 @@
 const express = require('express');
 const Post = require('../mongoMedel/post');
 const query = require('../mongoMedel/query');
-const { isLoggedIn } = require('../middlewares/passport/checkLogin');
+const { isLoggedIn } = require('../middlewares/checkLogin');
 
 const router = express.Router();
 
 
-router.get('/', isLoggedIn, async (req, res) => {
+router.get('/', async (req, res) => {
   const posts = await Post.find({}).sort({ date: 1 });
   res.json({
     ok: true,
@@ -23,6 +23,16 @@ router.post('/', isLoggedIn, async (req, res) => {
     ok: true,
     message: null,
     result,
+  });
+});
+
+router.get('/:id', async (req, res) => {
+  const { id } = req.params;
+  const posts = await Post.find({ _id: id });
+  res.json({
+    ok: true,
+    message: null,
+    result: posts,
   });
 });
 
