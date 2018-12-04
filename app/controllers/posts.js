@@ -1,7 +1,7 @@
 
 const express = require('express');
 const Post = require('../mongoMedel/post');
-const query = require('../mongoMedel/query');
+// const query = require('../mongoMedel/query');
 const { isLoggedIn } = require('../middlewares/checkLogin');
 
 const router = express.Router();
@@ -18,11 +18,19 @@ router.get('/', async (req, res) => {
 
 router.post('/', isLoggedIn, async (req, res) => {
   const { _id } = req.user;
-  const result = await query.Post.create(req.body, _id);
+  // const result = await query.Post.create(req.body, _id);
+  const post = new Post();
+  post.todo = req.body.todo;
+  post.date = req.body.date;
+  post.content = req.body.content;
+  post.status = req.body.status;
+  post.priority = req.body.priority;
+  post.userId = _id;
+  post.save();
   res.json({
     ok: true,
     message: null,
-    result,
+    post,
   });
 });
 
