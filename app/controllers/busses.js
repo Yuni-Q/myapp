@@ -167,6 +167,7 @@ router.get('/busStop/:busStopName', async (req, res) => {
       });
     })
     .then(() => {
+      console.log(busStopTimes);
       res.json({
         ok: true,
         message: null,
